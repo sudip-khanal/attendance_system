@@ -1,0 +1,72 @@
+
+{% extends 'Admin/admain.html' %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <main>
+        <div class="container-fluid px-4">
+
+            <div class="card">
+                <div class="card-header">
+                  <strong>{{ student_record.first_name }} {{ student_record.last_name }}</strong>
+                </div>
+                <div class="card-body">
+                  <p class="card-text">    
+                   <strong>Id: </strong>{{ student_record.id }}</p>
+                  
+                   <p class="card-text">
+                    <strong>Created_At:</strong>{{ student_record.created_at }}</p>
+                   
+                    <p class="card-text">
+                    <strong>User Id:</strong> {{ student_record.user_id }}</p>
+                   
+                    <p class="card-text">
+                   <strong>Email: </strong> {{ student_record.email }}</p>
+                  
+                   <p class="card-text">
+                    <strong>Roll No:</strong>{{ student_record.roll_num }}</p>
+                    
+                    <p class="card-text">
+                    <strong>Faculty: </strong>{{ student_record.my_faculty}}</p>
+                    
+                    <p class="card-text">
+                    <strong>Semester: </strong>{{ student_record.sem }}</p>
+                  
+                    <p class="card-text">
+                    <strong>Phone No:</strong>{{ student_record.phone }}
+                  </p>
+                    <p class="card-text">
+                        <strong>Gender: </strong>{{ student_record.gender }}</p>
+                    <p class="card-text">
+                        <strong>Address:</strong>{{ student_record.address }}</p>
+                </div>
+              </div>
+              </br>
+              <a href= "{% url 'Stdata' %}" class =" btn btn-secondary ">Back</a>
+              <a href= "{% url 'deleteStudent' student_record.id %}" class =" btn btn-danger ">Delete</a>
+              <a href= "{% url 'UpdateStudent' student_record.id %}" class =" btn btn-success ">Update</a>
+
+              
+          
+        </div>
+    </main>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="/static/assets/demo/chart-area-demo.js"></script>
+    <script src="/static/assets/demo/chart-bar-demo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+    <script src="/static/assets/js/datatables-simple-demo.js"></script>
+
+{% endblock javascripts %}
+
+

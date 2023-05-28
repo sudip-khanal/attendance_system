@@ -1,0 +1,90 @@
+<html>
+<head>
+    <title>Pdf Report</title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: #555;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 3px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="content">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 contents">
+                        <h1>Attendance Report</h1>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <h3>Attendance Report of: {{ fname }} {{ lname }} </h3>
+                    <p>Date Range: {{ start_date }} To {{ end_date }}</p>
+                    <p>Total Days: {{ num_days }}</p>
+                    <p>Present Days: {{ presentdays }}</p>
+                    <p>Absent Days: {{ absentdays }}</p>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Time</th>
+                            <th>Faculty</th>
+                            <th>Semester</th>
+                            <th>Roll Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for attendance in stattendances %}
+                        <tr>
+                            <td>{{ attendance.date }}</td>
+                            <td>{{ attendance.first_name }} {{ attendance.last_name }}</td>
+                            <td>{{ attendance.ststus }}</td>
+                            <td>{{ attendance.time }}</td>
+                            <td>{{ attendance.faculty }}</td>
+                            <td>{{ attendance.sem }}</td>
+                            <td>{{ attendance.roll_num }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

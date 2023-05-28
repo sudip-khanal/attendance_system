@@ -1,0 +1,32 @@
+{% extends 'Admin/admain.html' %} {% block content %}
+</br>
+<div class="content">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 contents">
+        <h3>Add students Record</h3>
+        {% if form.errors %}
+			          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+			          Your Form Has Errors
+			          {% for field in form %}
+			  	        {% if field.errors %}
+			  	    	{{ field.errors }}
+			  	      {% endif %}
+			            {% endfor %}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+        {% endif %}
+
+        <form method="POST" action=" {% url 'AddStdData' %} ">
+          {% csrf_token %} {{ form.as_p }}
+
+          <input type="submit" value="Submit" class="btn btn-primary" />
+          <input type="reset" value="Clear" class="btn btn-danger" />
+          <a href= "{% url 'adminpage' %}" class =" btn btn-secondary ">Cancle And Continue</a>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

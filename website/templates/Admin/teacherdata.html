@@ -1,0 +1,66 @@
+{% extends 'Admin/admain.html' %}
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+
+<main>
+
+    <div class="container-fluid px-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Teacher DataTable 
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple"  class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Joined Date</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>User Name</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Id</th>
+                            <th>Joined Date</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>User Name</th>
+                        </tr>
+                    </tfoot>
+
+                    <tbody>
+                        {% for Teacher in Teachers %}
+                        <tr>
+                            <td><a href= "{% url 'tearecord' Teacher.id %}"> {{ Teacher.id }} </a> </td>
+                            <td>{{ Teacher.date_joined}}  </td>
+                            <td>  {{ Teacher.first_name }} {{ Teacher.last_name }}</td>
+                            <td>{{ Teacher.email }}</td>
+                            <td>{{ Teacher.username}}  </td>
+                      </tr>
+                      {% endfor %} 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+{% endblock content %}
+{% block javascripts %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="/static/assets/demo/chart-area-demo.js"></script>
+    <script src="/static/assets/demo/chart-bar-demo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+    <script src="/static/assets/js/datatables-simple-demo.js"></script>
+
+{% endblock javascripts %}

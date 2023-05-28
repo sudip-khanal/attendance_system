@@ -1,0 +1,43 @@
+
+{% extends "Teacher/main.html" %}
+
+
+{% block title %} Teacher Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+
+<main>
+    <div class="container-fluid px-4">
+
+        <div class="card">
+          {% for tp in tprofiles %}
+            <div class="card-header">
+              <strong> {{ tp.first_name }} {{ tp.last_name }}</strong>
+            </div>
+            <div class="card-body">
+              <p class="card-text">    
+               <strong>Id: </strong> {{ tp.id }}</p>
+              
+               <p class="card-text">
+                <strong>Joined Date:</strong> {{ tp.date_joined }}</p>
+               
+                <p class="card-text">
+               <strong>Email: </strong> {{ tp.email }}</p>
+              
+               <p class="card-text">
+                <strong>User Name:</strong> {{ tp.username }}</p>
+            </div>
+            {% endfor %}
+          </div>
+          </br>
+
+    </div>
+</main>
+
+
+
+{% endblock content %}

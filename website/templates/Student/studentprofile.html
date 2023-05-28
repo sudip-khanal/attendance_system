@@ -1,0 +1,61 @@
+{% extends "Student/stmain.html" %}
+
+{% block title %} Student Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<main>
+    <div class="container-fluid px-4">
+
+        <div class="card">
+            {% for profile in profiles %}
+            <div class="card-header">
+              <strong>{{profile.first_name}} {{profile.last_name}}</strong>
+            </div>
+            <div class="card-body">
+              <p class="card-text">    
+               <strong>Id: </strong>{{profile.user_id}}</p>
+              
+               <p class="card-text">
+                <strong>Created_At:</strong>{{ profile.created_at }}</p>
+               
+                <p class="card-text">
+                <strong>User Id:</strong> {{ profile.user_id }}</p>
+               
+                <p class="card-text">
+               <strong>Email: </strong>{{profile.email}}</p>
+              
+               <p class="card-text">
+                <strong>Roll No:</strong>{{ profile.roll_num }}</p>
+                
+                <p class="card-text">
+                <strong>Faculty: </strong>{{profile.my_faculty}}</p>
+                
+                <p class="card-text">
+                <strong>Semester: </strong>{{ profile.sem }}</p>
+              
+                <p class="card-text">
+                <strong>Phone No:</strong>{{profile.phone}}
+              </p>
+                <p class="card-text">
+                    <strong>Gender: </strong>{{ profile.gender }}</p>
+                <p class="card-text">
+                    <strong>Address:</strong>{{ profile.address }}</p>
+            </div>
+          </div>
+          {% endfor %}
+          </br>
+          <a href= "{% url 'student' %}" class =" btn btn-secondary ">Back</a>
+    </div>
+</main>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+
+
+
+
