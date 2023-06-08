@@ -44,15 +44,73 @@
                     </div>
                 </div>
                 <div class="col-xl-3 col-md-6">
-                    <form action="{% url 'face' %}" method="post">
+                     <form action="{% url 'face' %}" method="post">
                         {% csrf_token %}
                         <button class="btn btn-success text-white  " type="submit">Take Attendances </button>
-                    </form>
+                    </form> 
                 </div>
 
+            <a class="btn btn-secondary text-white  " href="{% url 'attendance_report' %}"> Attendence Reports</a> 
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    My Attendances 
                 </div>
+                <div class="card-body">
+                    <table id="datatablesSimple"  class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Name</th>
+                                <th>Faculty</th>
+                                <th>Semester</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                                <th>Gender</th>
+                            </tr>
+                        </thead>
+                     
+                          
+                        <tfoot>
+                       
+                            <tr>
+                                <th>Username</th>
+                                <th>Name</th>
+                                <th>Faculty</th>
+                                <th>Semester</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                                <th>Gender</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% for at in teacherAttendances %}
+                            <tr>
+                                <td> {{at.username}} </td>
+                                <td>{{ at.first_name }} {{ at.last_name }}</td>
+                                <td>{{ at.faculty}}  </td>
+                                <td>{{ at.sem}}  </td>
+                                <td>{{ at.date}}  </td>
+                                <td>{{ at.time}}  </td>
+                                <td>{{ at.ststus}}  </td>
+                                <td>{{ at.gender}}  </td>
+                              
+                          </tr>
+                          {% endfor %} 
+                        </tbody>
+                    </table>
+         
+
             </div>
-    </main>
+        </div>
+    </div>
+</main>
+
+
+
 
 {% endblock content %}
 

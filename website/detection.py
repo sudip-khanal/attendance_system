@@ -7,7 +7,7 @@ import os
 import sqlite3
 import numpy as np
 from django.contrib import messages
-from .models import User, StudentRecord,Attendance
+from .models import User,Attendance
 from django.db import connection
 from datetime import date
 from datetime import datetime
@@ -41,8 +41,8 @@ class FaceRecognition:
                 count += 1
 
                 # Save the captured image into the datasets folder
-                cv2.imwrite("website/dataset/User_id." + str(user_id) + '.' + str(count) + ".jpg", gray[y:y+h,x:x+w])
-                cv2.imshow('image', img)
+                cv2.imwrite("website/dataset/User_id."+str(user_id)+'.'+str(count) + ".jpg", gray[y:y+h,x:x+w])
+                cv2.imshow(' system is taking images please wait few seconds here', img)
 
             k = cv2.waitKey(100) & 0xff # Press 'ESC' for exiting video
             if k == 27:
@@ -65,7 +65,8 @@ class FaceRecognition:
         for image in path:
             img=Image.open(image).convert('L') # conver in gray scale 
             imageNp = np.array(img,'uint8')
-            id =int(os.path.split(image)[1].split('.')[1])
+            id = int (os.path.split(image)[1].split('.')[1])
+
             print("image",id)
             faces.append(imageNp)
             ids.append(id)
@@ -82,7 +83,7 @@ class FaceRecognition:
         print("Result","Training Dataset With Image Complated!")
 
      ##mark attendance
-    def mark_attendance(self,fname,lname,faculty,sem,gender,s_uid,rollNo):
+    def mark_attendance(self,fname,lname,rollNo,gender,faculty,sem,uname,usertype):
         now = datetime.now()
         status = 'Present'
         # date = now.strftime("%d/%m/%Y")
@@ -92,17 +93,15 @@ class FaceRecognition:
         # Create a cursor object
         cursor = connection.cursor()
     
-        if Attendance.objects.filter(date=dateNow , user_id=s_uid).count() != 0:
+        if Attendance.objects.filter(date=dateNow,username=uname).count() != 0:
             print("Attendance already recorded.")
         else:
-            query = "INSERT INTO website_attendance(user_id, first_name, last_name, roll_num, gender, faculty, sem, ststus, date,time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)"
-            values = (s_uid, fname, lname, rollNo, gender, faculty, sem, status, dateNow,timenow)
+            query = "INSERT INTO website_attendance(first_name, last_name, roll_num, gender, faculty, sem,date,time,ststus,username,usertype) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            values = (fname, lname, rollNo, gender, faculty, sem, dateNow,timenow,status,uname,usertype)
             cursor.execute(query, values)
             connection.commit()
             connection.close()
             print("Attendance Taken Successfully..")
-
-         
 
     def recognizeFace(self):
         def draw_boundray(img,classifier,scaleFactor,minNeighbors,color,text,clf):
@@ -123,46 +122,55 @@ class FaceRecognition:
                 # Create a cursor object
                 cursor = conn.cursor() 
                 
-                cursor.execute("SELECT first_name FROM website_studentrecord WHERE user_id =" + str(id))
+                cursor.execute("SELECT first_name FROM website_user WHERE id =" + str(id))
                 fname=cursor.fetchone()
-                fname = "+".join(fname)                    
+                fname = "+".join(fname) if fname else ""
+                    
 
-                cursor.execute("SELECT last_name FROM website_studentrecord WHERE user_id=" + str(id))
+                cursor.execute("SELECT last_name FROM website_user WHERE id=" + str(id))
                 lname =cursor.fetchone()
-                lname = "+".join(lname) 
+                lname = "+".join(lname) if lname else ""
+ 
 
-                cursor.execute("SELECT my_faculty FROM website_studentrecord WHERE user_id="+ str(id))
+                cursor.execute("SELECT faculty FROM website_user WHERE id="+ str(id))
                 faculty=cursor.fetchone()
-                faculty = "+".join(faculty) 
+                faculty = "+".join(faculty) if faculty else ""
+ 
 
-                cursor.execute("SELECT sem FROM website_studentrecord WHERE user_id  = "+ str(id))
+                cursor.execute("SELECT semester FROM website_user WHERE id  = "+ str(id))
                 sem=cursor.fetchone()
-                sem = "+".join(sem) 
+                sem = "+".join(sem) if sem else ""
 
-                cursor.execute("SELECT gender FROM website_studentrecord WHERE user_id ="+ str(id))
+                cursor.execute("SELECT gender FROM website_user WHERE id ="+ str(id))
                 gender=cursor.fetchone()
-                gender = "+".join(gender)
+                gender = "+".join(gender) if gender else ""
 
-                cursor.execute("SELECT user_id FROM website_studentrecord WHERE user_id  = "+ str(id))
-                s_uid=cursor.fetchone()
-                s_uid = "+".join(s_uid)
+                cursor.execute("SELECT username FROM website_user WHERE id ="+ str(id))
+                uname=cursor.fetchone()
+                uname = "+".join(uname) if uname else ""
 
-                cursor.execute("SELECT roll_num FROM website_studentrecord WHERE user_id  = "+ str(id))
+                cursor.execute("SELECT roll_num FROM website_user WHERE id  = "+ str(id))
                 rollNo=cursor.fetchone()
-                rollNo = "+".join(rollNo)
+                rollNo = "+".join(rollNo) if rollNo else ""
+
+
+                cursor.execute("SELECT userType FROM website_user WHERE id  = "+ str(id))
+                usertype=cursor.fetchone()
+                usertype = "+".join(usertype) if usertype else ""
+
                 
                 if confidence > 77:
-                    
-                    cv2.putText(img,f"User Id:{s_uid}",(x,y-120),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,0,255),1)
-                    cv2.putText(img,f"Name:{fname} {lname}",(x,y-100),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,0,255),1)
-                    cv2.putText(img,f"Faculty:{faculty}",(x,y-80),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,0,255),1)
-                    cv2.putText(img,f"Semester:{sem}",(x,y-60),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,0,255),1)
-                    cv2.putText(img,f"Gender:{gender}",(x,y-40),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,0,255),1)
-                    cv2.putText(img,f"Roll_No:{rollNo}",(x,y-20),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,0,255),1)
+                    cv2.putText(img,f"You Are:{usertype}",(x,y-120),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,0,255),1)
+                    cv2.putText(img,f"usrname:{uname}",(x,y-100),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,0,255),1)
+                    cv2.putText(img,f"Name:{fname} {lname}",(x,y-80),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,0,255),1)
+                    cv2.putText(img,f"Faculty:{faculty}",(x,y-60),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,0,255),1)
+                    cv2.putText(img,f"Semester:{sem}",(x,y-40),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,0,255),1)
+                    cv2.putText(img,f"Gender:{gender}",(x,y-20),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,0,255),1)
+                    cv2.putText(img,f"Roll_No:{rollNo}",(x,y-0),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,0,255),1)
                     
                       # Call mark_attendance method when face is recognized
                     if self.mark_attendance:
-                        self.mark_attendance(fname, lname, faculty, sem, gender, s_uid, rollNo)
+                        self.mark_attendance(fname,lname,rollNo,gender,faculty,sem,uname,usertype)
                         self.mark_attendance = False
                 else:
                     cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),3)

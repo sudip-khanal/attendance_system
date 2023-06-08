@@ -20,10 +20,7 @@
                    <strong>Id: </strong>{{ student_record.id }}</p>
                   
                    <p class="card-text">
-                    <strong>Created_At:</strong>{{ student_record.created_at }}</p>
-                   
-                    <p class="card-text">
-                    <strong>User Id:</strong> {{ student_record.user_id }}</p>
+                    <strong>Joined Date:</strong>{{ student_record.date_joined }}</p>
                    
                     <p class="card-text">
                    <strong>Email: </strong> {{ student_record.email }}</p>
@@ -32,10 +29,10 @@
                     <strong>Roll No:</strong>{{ student_record.roll_num }}</p>
                     
                     <p class="card-text">
-                    <strong>Faculty: </strong>{{ student_record.my_faculty}}</p>
+                    <strong>Faculty: </strong>{{ student_record.faculty}}</p>
                     
                     <p class="card-text">
-                    <strong>Semester: </strong>{{ student_record.sem }}</p>
+                    <strong>Semester: </strong>{{ student_record.semester }}</p>
                   
                     <p class="card-text">
                     <strong>Phone No:</strong>{{ student_record.phone }}
@@ -44,6 +41,8 @@
                         <strong>Gender: </strong>{{ student_record.gender }}</p>
                     <p class="card-text">
                         <strong>Address:</strong>{{ student_record.address }}</p>
+                        <p class="card-text">
+                          <strong>Date of birth:</strong>{{ student_record.dob }}</p>
                 </div>
               </div>
               </br>

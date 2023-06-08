@@ -27,12 +27,26 @@
                   
                    <p class="card-text">
                     <strong>User Name:</strong>{{ Teachers_record.username }}</p>
+
+                    <p class="card-text">
+                    <strong>Faculty:</strong>{{ Teachers_record.faculty }}</p>
+
+                    <p class="card-text">
+                    <strong>Semester:</strong>{{ Teachers_record.semester }}</p>
+                    <p class="card-text">
+                    <strong>Dob:</strong>{{ Teachers_record.dob }}</p>
+                    <p class="card-text">
+                    <strong>Gender:</strong>{{ Teachers_record.gender }}</p>
+                    <p class="card-text">
+                    <strong>Phone:</strong>{{ Teachers_record.phone }}</p>
+                    <p class="card-text">
+                    <strong>Address:</strong>{{ Teachers_record.address }}</p>
                 </div>
               </div>
               </br>
               <a href= "{% url 'teacherdata' %}" class =" btn btn-secondary ">Back</a>
               <a href= "{% url 'tearecordDelete' Teachers_record.id  %}" class =" btn btn-danger ">Delete</a>
-
+              <a href= "{% url 'updateteacher' Teachers_record.id  %}" class =" btn btn-success ">Update</a>
 
         </div>
     

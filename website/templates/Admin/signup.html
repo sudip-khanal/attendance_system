@@ -1,109 +1,179 @@
-<!doctype html>
+ {% extends 'Admin/admain.html' %} {% block content %}
+</br>
+<script>
+  function showForm(userType) {
+    var studentForm = document.getElementById("student-form");
+    var teacherForm = document.getElementById("teacher-form");
+    var adminForm = document.getElementById("admin-form");
 
-{% load static %}
- <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="{% static 'fonts/icomoon/style.css' %}">
-
-    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-
-    <!-- Style -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
-    <title>Register Different users </title>
-  </head>
-  <body>
-  <div class="content">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-md-6 contents">
-          <div class="row justify-content-center">
-            <div class="col-md-12">
-              <div class="form-block">
-                  <div class="mb-4">
-                      <h5>Users Registration page With There Role</h5>
-                </div>
-                  
-                {% if form.errors %}
-			          <div class="alert alert-warning alert-dismissible fade show" role="alert">
-			          Your Form Has Errors
-			          {% for field in form %}
-			  	        {% if field.errors %}
-			  	    	{{ field.errors }}
-			  	      {% endif %}
-			            {% endfor %}
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-              {% endif %}
-              
-                <form  method="POST" >
-                    {% csrf_token %}
-                    <div class="form-group first">
-                      <label for="firstname">First Name</label>
-                        {{ form.first_name }}
-                    </div>
-                    <div class="form-group first">
-                      <label for="lastname">Last Name</label>
-                        {{ form.last_name }}
-                    </div>
-                  <div class="form-group first">
-                    <label for="username">Username</label>
-                      {{ form.username }}
-                  </div>
-                  <div class="form-group first">
-                    <label for="email">Email</label>
-                      {{ form.email}}
-                  </div>
-                  <div class="form-group last mb-4">
-                    <label for="password">Password</label>
-                      {{ form.password1 }}
-                  </div>
-                  <div class="form-group last mb-4">
-                    <label for="password">confirm Password</label>
-                      {{ form.password2 }}
-                  </div>
-                  <div class="d-flex mb-5 align-items-center">
-                    <label class="control control--checkbox mb-0"><span class="caption">Admin</span>
-                        {{ form.is_admin }}
-                      <div class="control__indicator"></div>
-                    </label>
-                  </div>
-                  <div class="d-flex mb-5 align-items-center">
-                    <label class="control control--checkbox mb-0"><span class="caption">Teacher</span>
-                        {{ form.is_teacher }}
-                      <div class="control__indicator"></div>
-                    </label>
-                  </div>
-                  <div class="d-flex mb-5 align-items-center">
-                    <label class="control control--checkbox mb-0"><span class="caption">Student</span>
-                        {{ form.is_student }}
-                      <div class="control__indicator"></div>
-                    </label>
-                  </div>
-                    
-                  <input type="submit"  value="Register" class="btn btn-pill text-white btn-block btn-primary">
-                </form>
-              </div>
-            </div>
-          </div>
+    if (userType === "student") {
+      studentForm.style.display = "block"; // Show the student form
+      teacherForm.style.display = "none"; // Hide the teacher form
+      adminForm.style.display = "none";
+    } else if (userType === "teacher") {
+      studentForm.style.display = "none"; // Hide the student form
+      teacherForm.style.display = "block"; // Show the teacher form
+      adminForm.style.display = "none";
+    } 
+    else if (userType === "admin") {
+      studentForm.style.display = "none";
+      teacherForm.style.display = "none"; 
+      adminForm.style.display = "block"; 
+    }else {
+      studentForm.style.display = "none"; // Hide the student form
+      teacherForm.style.display = "none"; // Hide the teacher form
+      adminForm.style.display = "none";
+    }
+  }
+</script>
+<div class="content">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 contents">
+        <h3>User Registration</h3>
+       
+         
+        <div class="form-group">
+          <label for="user-type">User Type:</label>
+          <select id="user-type" onchange="showForm(this.value)">
+            <option value="">Select User Type</option>
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div></br></br>
+     
+      <form method="POST" id="student-form" class="registration-form" style="display: none;"> 
+      {% if form.errors %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        Your Form Has Errors
+        {% for field in form %}
+          {% if field.errors %}
+        {{ field.errors }}
+        {% endif %}
+          {% endfor %}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+      {% endif %}
+           
+         {% csrf_token %}
+         {{ form.userType.label_tag }}
+         {{form.userType}}
+         {{ form.first_name.label_tag }}
+         {{ form.first_name }}
+         {{ form.last_name.label_tag }}
+         {{ form.last_name }}
+         {{ form.username.label_tag }}
+         {{ form.username }}
+         {{ form.email.label_tag }}
+         {{ form.email }}
+         {{ form.password1.label_tag }}
+         {{ form.password1 }}
+         {{ form.password2.label_tag }}
+         {{ form.password2 }}
+        {{ form.roll_num.label_tag }}
+        {{ form.roll_num }}
+        {{ form.phone.label_tag }}
+        {{ form.phone }}
+        {{ form.address.label_tag }}
+        {{ form.address }}
+        {{ form.dob.label_tag }}
+        {{ form.dob }}
+        {{ form.gender.label_tag }}
+        {{ form.gender }}
+        {{ form.faculty.label_tag }}
+        {{ form.faculty }}
+        {{ form.semester.label_tag }}
+        {{ form.semester }}
+      </br>
+        <!-- Add other common fields here -->
+        <input type="submit" value="Submit" class="btn btn-primary" />
+        <input type="reset" value="Clear" class="btn btn-danger" />
+        <a href="{% url 'adminpage' %}" class="btn btn-secondary">Cancel and Continue</a>
+      </form>
 
-      </div>
+      <form method="POST" id="teacher-form" class="registration-form" style="display: none;">        
+      {% if form.errors %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        Your Form Has Errors
+        {% for field in form %}
+          {% if field.errors %}
+        {{ field.errors }}
+        {% endif %}
+          {% endfor %}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endif %}
+     
+        {% csrf_token %}
+        {{ form.userType.label_tag }}
+         {{form.userType}}
+        {{ form.first_name.label_tag }}
+        {{ form.first_name }}
+        {{ form.last_name.label_tag }}
+        {{ form.last_name }}
+        {{ form.username.label_tag }}
+        {{ form.username }}
+        {{ form.email.label_tag }}
+        {{ form.email }}
+        {{ form.password1.label_tag }}
+        {{ form.password1 }}
+        {{ form.password2.label_tag }}
+        {{ form.password2 }}
+        {{ form.phone.label_tag }}
+        {{ form.phone }}
+        {{ form.address.label_tag }}
+        {{ form.address }}
+        {{ form.dob.label_tag }}
+        {{ form.dob }}
+        {{ form.gender.label_tag }}
+        {{ form.gender }}
+        {{ form.faculty.label_tag }}
+        {{ form.faculty }}
+        {{ form.semester.label_tag }}
+        {{ form.semester }}
+        <!-- Add other teacher-specific fields here -->
+      </br>
+        <input type="submit" value="Submit" class="btn btn-primary" />
+        <input type="reset" value="Clear" class="btn btn-danger" />
+        <a href="{% url 'adminpage' %}" class="btn btn-secondary">Cancel and Continue</a>
+      </form>
+      <form method="POST" id="admin-form" class="registration-form" style="display: none;">        
+      {% if form.errors %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        Your Form Has Errors
+        {% for field in form %}
+          {% if field.errors %}
+        {{ field.errors }}
+        {% endif %}
+          {% endfor %}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endif %}
+     
+        {% csrf_token %}
+        {{ form.userType.label_tag }}
+         {{form.userType}}
+        {{ form.first_name.label_tag }}
+        {{ form.first_name }}
+        {{ form.last_name.label_tag }}
+        {{ form.last_name }}
+        {{ form.username.label_tag }}
+        {{ form.username }}
+        {{ form.email.label_tag }}
+        {{ form.email }}
+        {{ form.password1.label_tag }}
+        {{ form.password1 }}
+        {{ form.password2.label_tag }}
+        {{ form.password2 }}
+      </br>
+        <input type="submit" value="Submit" class="btn btn-primary" />
+        <input type="reset" value="Clear" class="btn btn-danger" />
+        <a href="{% url 'adminpage' %}" class="btn btn-secondary">Cancel and Continue</a>
+      </form>
     </div>
-  </div> 
+  </div>
+</div>
+</div>
 
-
-    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
-    <script src="{% static 'js/popper.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/main.js' %}"></script>
-  </body>
-</html>
+{% endblock content %} 

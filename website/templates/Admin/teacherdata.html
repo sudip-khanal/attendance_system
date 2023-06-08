@@ -7,7 +7,16 @@
 {% block content %}
 
 
-<main>
+<main> <br> 
+    {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+    {% endif %}
+    <br>
 
     <div class="container-fluid px-4">
         <div class="card mb-4">
@@ -24,15 +33,27 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>User Name</th>
+                            <th>Faculty</th>
+                            <th>Semester</th>
+                            <th>DOB</th>
+                            <th>Gender</th>
+                            <th>Phone No</th>
+                            <th>Address</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <th>Id</th>
-                            <th>Joined Date</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>User Name</th>
+                                <th>Id</th>
+                                <th>Joined Date</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>User Name</th>
+                                <th>Faculty</th>
+                                <th>Semester</th>
+                                <th>DOB</th>
+                                <th>Gender</th>
+                                <th>Phone No</th>
+                                <th>Address</th>
                         </tr>
                     </tfoot>
 
@@ -44,6 +65,12 @@
                             <td>  {{ Teacher.first_name }} {{ Teacher.last_name }}</td>
                             <td>{{ Teacher.email }}</td>
                             <td>{{ Teacher.username}}  </td>
+                            <td>{{ Teacher.faculty}}  </td>
+                            <td>{{ Teacher.semester}}  </td>
+                            <td>{{ Teacher.dob}}  </td>
+                            <td>{{ Teacher.gender}}  </td>
+                            <td>{{ Teacher.phone}}  </td>
+                            <td>{{ Teacher.address}}  </td>
                       </tr>
                       {% endfor %} 
                     </tbody>

@@ -9,6 +9,16 @@
 {% block content %}
 
     <main>
+        <br> 
+    {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+    {% endif %}
+    
         <div class="container-fluid px-4">
             <h1 class="mt-4">Admin Dashboard</h1>
             <ol class="breadcrumb mb-4">
@@ -70,10 +80,10 @@
                     </div>
                 </div>
                 <div class="col-xl-3 col-md-6">
-                    <form action="{% url 'face' %}" method="post">
+                     <form action="{% url 'faceReconization' %}" method="post">
                         {% csrf_token %}
                         <button class="btn btn-success text-white  " type="submit">Take Attendances </button>
-                    </form>
+                    </form> 
                 </div>
             {% comment %} <div class="row">
                 <div class="col-xl-6">
@@ -108,10 +118,8 @@
                                 <th>Name</th>
                                 <th>email</th>
                                 <th>username</th>
-                                <th>Is Admin</th>
-                                <th>Is Teacher</th>
-                                <th>Is Student</th>
-                                <th>Created At</th>
+                                <th>User Type</th>
+                                <th>Joined Date</th>
                                 
                             </tr>
                         </thead>
@@ -124,10 +132,8 @@
                                 <th>Name</th>
                                 <th>email</th>
                                 <th>username</th>
-                                <th>Is Admin</th>
-                                <th>Is Teacher</th>
-                                <th>Is Student</th>
-                                <th>Created At</th>
+                                <th>User Type</th>
+                                <th>Joined Date</th>
                             </tr>
                         </tfoot>
                            
@@ -138,9 +144,7 @@
                               <td>{{ user.first_name }} {{ user.last_name }}</td>
                               <td>{{ user.email }}</td>
                               <td>{{ user.username }}</td>
-                              <td>{{ user.is_admin }}</td>
-                              <td>{{ user.is_teacher}}</td>
-                              <td>{{ user.is_student }}</td>
+                              <td>{{ user.userType }}</td>
                               <td>{{ user.date_joined }} </td>
                               
                           </tr>

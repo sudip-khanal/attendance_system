@@ -1,88 +1,104 @@
-
-{% extends 'Admin/admain.html' %}
-
-{% block title %} Dashboard {% endblock %} 
+{% extends 'Admin/admain.html' %} {% block title %} Dashboard {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
-
-{% block content %}
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
 
 <main>
+  <br />
 
-        <div class="container-fluid px-4">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-table me-1"></i>
-                    Students Attendences 
-                </div>
-                <div class="card-body">
-                    <table id="datatablesSimple"  class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>User Id</th>
-                                <th>Name</th>
-                                <th>Faculty</th>
-                                <th>Semester</th>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Roll No</th>
-                                <th>Status</th>
-                                <th>Gender</th>
-                            </tr>
-                        </thead>
-                     
-                          
-                        <tfoot>
-                       
-                            <tr>
-                                <th>Id</th>
-                                <th>User Id</th>
-                                <th>Name</th>
-                                <th>Faculty</th>
-                                <th>Semester</th>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Roll No</th>
-                                <th>Status</th>
-                                <th>Gender</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            {% for at in Attendences %}
-                            <tr>
-                                <td>{{at.id}} </td>
-                                <td><a href= "{% url 'Recordattendance' at.user_id  %}"> {{at.user_id}} </td>
-                                <td>{{ at.first_name }} {{ at.last_name }}</td>
-                                <td>{{ at.faculty}}  </td>
-                                <td>{{ at.sem}}  </td>
-                                <td>{{ at.date}}  </td>
-                                <td>{{ at.time}}  </td>
-                                <td>{{ at.roll_num}}  </td>
-                                <td>{{ at.ststus}}  </td>
-                                <td>{{ at.gender}}  </td>
-                              
-                          </tr>
-                          {% endfor %} 
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </main>
+  {% if messages %} {% for message in messages %}
+  <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  {% endfor %} {% endif %}
+  <br />
+  <div class="container-fluid px-4">
+    <div class="card mb-4">
+      <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        Attendences
+      </div>
+      <div class="card-body">
+        <table id="datatablesSimple" class="table table-hover">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>UserName</th>
+              <th>Name</th>
+              <th>Faculty</th>
+              <th>Semester</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Roll No</th>
+              <th>Status</th>
+              <th>Gender</th>
+              <th>UserType</th>
+            </tr>
+          </thead>
+
+          <tfoot>
+            <tr>
+              <th>Id</th>
+              <th>UserName</th>
+              <th>Name</th>
+              <th>Faculty</th>
+              <th>Semester</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Roll No</th>
+              <th>Status</th>
+              <th>Gender</th>
+              <th>user Type</th>
+            </tr>
+          </tfoot>
+          <tbody>
+            {% for at in Attendences %}
+            <tr>
+              <td>{{at.id}}</td>
+              <td>
+                <a href="{% url 'Recordattendance' at.username %}">
+                  {{ at.username }}
+                </a>
+              </td>
+              <td>{{ at.first_name }} {{ at.last_name }}</td>
+              <td>{{ at.faculty}}</td>
+              <td>{{ at.sem}}</td>
+              <td>{{ at.date}}</td>
+              <td>{{ at.time}}</td>
+              <td>{{ at.roll_num}}</td>
+              <td>{{ at.ststus}}</td>
+              <td>{{ at.gender}}</td>
+              <td>{{ at.usertype}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
 
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="/static/assets/demo/chart-area-demo.js"></script>
-    <script src="/static/assets/demo/chart-bar-demo.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-    <script src="/static/assets/js/datatables-simple-demo.js"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
+  crossorigin="anonymous"
+></script>
+<script src="/static/assets/demo/chart-area-demo.js"></script>
+<script src="/static/assets/demo/chart-bar-demo.js"></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"
+  crossorigin="anonymous"
+></script>
+<script src="/static/assets/js/datatables-simple-demo.js"></script>
 
 {% endblock javascripts %}
-
-

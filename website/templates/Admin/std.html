@@ -7,9 +7,18 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-<br><br>
-
 <main>
+    <br> 
+    {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+    {% endif %}
+    <br>
+    
         <div class="container-fluid px-4">
             <div class="card mb-4">
                 <div class="card-header">
@@ -22,8 +31,7 @@
                             <tr>
                             
                                 <th>Id</th>
-                                <th>Created_At</th>
-                                <th>User Id</th>
+                                <th>Joined Date</th>
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Roll No</th>
@@ -41,8 +49,7 @@
                        
                             <tr>
                                 <th>Id</th>
-                                <th>Created_At</th>
-                                <th>User Id</th>
+                                <th>Joined Date</th>
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Roll No</th>
@@ -59,13 +66,12 @@
                             {% for student in students %}
                             <tr>
                                 <td><a href= "{% url 'record' student.id %}">{{ student.id}} </a> </td>
-                                <td>{{ student.created_at}}  </td>
-                                <td>{{ student.user_id}}  </td>
+                                <td>{{ student.date_joined}}  </td>
                                 <td>{{ student.first_name }} {{ student.last_name }}</td>
                                 <td>{{ student.email }}</td>
                                 <td>{{ student.roll_num}}  </td>
-                                <td>{{ student.my_faculty}}  </td>
-                                <td>{{ student.sem}}  </td>
+                                <td>{{ student.faculty}}  </td>
+                                <td>{{ student.semester}}  </td>
                                 <td>{{ student.dob}}  </td>
                                 <td>{{ student.gender}}  </td>
                                 <td>{{ student.phone}}  </td>

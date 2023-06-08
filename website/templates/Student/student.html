@@ -18,23 +18,13 @@
                     <div class="card bg-primary text-white mb-4">
                         <div class="card-body">My Profile</div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="{% url 'stprofile' %}">View Details</a>
+                           <a class="small text-white stretched-link" href="{% url 'stprofile' %}">View Details</a> 
                             <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                         </div>
                     </div>
                 </div>
-                {% comment %} <div class="col-xl-3 col-md-6">
-                    <div class="card  mb-4">
-                        <div class="card-body">My Attendance</div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="{% url 'stdattendance' %}">View Details</a>
-                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                        </div>
-                    </div>
-                </div> {% endcomment %}
             
-                 <a class="btn btn-secondary text-white  " href="{% url 'attendance_report' %}"> Attendence Reports</a>
-              
+               <a class="btn btn-secondary text-white  " href="{% url 'attendance_report' %}"> Attendence Reports</a> 
                 
                         
                     
@@ -47,7 +37,7 @@
                         <table id="datatablesSimple"  class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>User Id</th>
+                                    <th>Username</th>
                                     <th>Name</th>
                                     <th>Faculty</th>
                                     <th>Semester</th>
@@ -63,7 +53,7 @@
                             <tfoot>
                            
                                 <tr>
-                                    <th>User Id</th>
+                                    <th>Username</th>
                                     <th>Name</th>
                                     <th>Faculty</th>
                                     <th>Semester</th>
@@ -77,7 +67,7 @@
                             <tbody>
                                 {% for at in stattendances %}
                                 <tr>
-                                    <td> {{at.user_id}} </td>
+                                    <td> {{at.username}} </td>
                                     <td>{{ at.first_name }} {{ at.last_name }}</td>
                                     <td>{{ at.faculty}}  </td>
                                     <td>{{ at.sem}}  </td>
