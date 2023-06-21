@@ -5,12 +5,24 @@
 
 <main>
   <br />
+
+  {% if messages %} {% for message in messages %}
+  <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  {% endfor %} {% endif %}
   <br />
   <div class="container-fluid px-4">
     <div class="card mb-4">
       <div class="card-header">
         <i class="fas fa-table me-1"></i>
-        Student's Attendences
+        Attendences
       </div>
       <div class="card-body">
         <table id="datatablesSimple" class="table table-hover">
@@ -49,11 +61,7 @@
             {% for at in Attendences %}
             <tr>
               <td>{{at.id}}</td>
-              <td>
-                <a href="{% url 'Recordattendance' at.username %}">
-                  {{ at.username }}
-                </a>
-              </td>
+              <td>{{ at.username }}</td>
               <td>{{ at.first_name }} {{ at.last_name }}</td>
               <td>{{ at.faculty}}</td>
               <td>{{ at.sem}}</td>

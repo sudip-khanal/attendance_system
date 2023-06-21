@@ -24,19 +24,9 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="col-xl-3 col-md-6">
-                    <div class="card bg-danger text-white mb-4">
-                        <div class="card-body">My Profile </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="{% url 'tprofile' %}">View Details</a>
-                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-warning text-white mb-4">
-                        <div class="card-body">Attendances Details</div>
+                    <div class="card bg-success text-white mb-4">
+                        <div class="card-body"> Student Attendances Details</div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
                             <a class="small text-white stretched-link" href="{% url 'attendence' %}">View Details</a>
                             <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -44,11 +34,21 @@
                     </div>
                 </div>
                 <div class="col-xl-3 col-md-6">
-                     <form action="{% url 'face' %}" method="post">
-                        {% csrf_token %}
-                        <button class="btn btn-success text-white  " type="submit">Take Attendances </button>
-                    </form> 
+                    <div class="card bg-secondary text-white mb-4">
+                        <div class="card-body">My Profile </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small text-white stretched-link" href="{% url 'tprofile' %}">View Details</a>
+                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
                 </div>
+             
+                <div class="col-xl-3 col-md-6">
+                    <form action="{% url 'faceReconization' %}" method="post">
+                       {% csrf_token %}
+                       <button class="btn btn-success text-white  " type="submit">Take Attendances </button>
+                   </form> 
+               </div>
 
             <a class="btn btn-secondary text-white  " href="{% url 'attendance_report' %}"> Attendence Reports</a> 
 
@@ -69,6 +69,8 @@
                                 <th>Time</th>
                                 <th>Status</th>
                                 <th>Gender</th>
+                                <th>Roll No</th>
+
                             </tr>
                         </thead>
                      
@@ -84,6 +86,8 @@
                                 <th>Time</th>
                                 <th>Status</th>
                                 <th>Gender</th>
+                                <th>Roll No</th>
+
                             </tr>
                         </tfoot>
                         <tbody>
@@ -97,6 +101,7 @@
                                 <td>{{ at.time}}  </td>
                                 <td>{{ at.ststus}}  </td>
                                 <td>{{ at.gender}}  </td>
+                                <td>None</td>
                               
                           </tr>
                           {% endfor %} 

@@ -2,67 +2,66 @@
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %} {% block content %}
-
 <main>
   <br />
+  {% if messages %} {% for message in messages %}
+  <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  {% endfor %} {% endif %}
   <br />
+
   <div class="container-fluid px-4">
     <div class="card mb-4">
       <div class="card-header">
         <i class="fas fa-table me-1"></i>
-        Student's Attendences
+        Admins DataTable
       </div>
       <div class="card-body">
         <table id="datatablesSimple" class="table table-hover">
           <thead>
             <tr>
               <th>Id</th>
-              <th>UserName</th>
+              <th>Joined Date</th>
               <th>Name</th>
-              <th>Faculty</th>
-              <th>Semester</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Roll No</th>
-              <th>Status</th>
-              <th>Gender</th>
-              <th>UserType</th>
+              <th>Email</th>
+              <th>username</th>
+              <th>Staff</th>
+              <th>is_active</th>
+              <th>Last Login</th>
             </tr>
           </thead>
 
           <tfoot>
             <tr>
               <th>Id</th>
-              <th>UserName</th>
+              <th>Joined Date</th>
               <th>Name</th>
-              <th>Faculty</th>
-              <th>Semester</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Roll No</th>
-              <th>Status</th>
-              <th>Gender</th>
-              <th>user Type</th>
+              <th>Email</th>
+              <th>username</th>
+              <th>Staff</th>
+              <th>is_active</th>
+              <th>Last Login</th>
             </tr>
           </tfoot>
+
           <tbody>
-            {% for at in Attendences %}
+            {% for admin in admins %}
             <tr>
-              <td>{{at.id}}</td>
-              <td>
-                <a href="{% url 'Recordattendance' at.username %}">
-                  {{ at.username }}
-                </a>
-              </td>
-              <td>{{ at.first_name }} {{ at.last_name }}</td>
-              <td>{{ at.faculty}}</td>
-              <td>{{ at.sem}}</td>
-              <td>{{ at.date}}</td>
-              <td>{{ at.time}}</td>
-              <td>{{ at.roll_num}}</td>
-              <td>{{ at.ststus}}</td>
-              <td>{{ at.gender}}</td>
-              <td>{{ at.usertype}}</td>
+              <td>{{ admin.id}}</td>
+              <td>{{ admin.date_joined}}</td>
+              <td>{{ admin.first_name }} {{ admin.last_name }}</td>
+              <td>{{ admin.email }}</td>
+              <td>{{ admin.username}}</td>
+              <td>{{ admin.is_staff}}</td>
+              <td>{{ admin.is_active}}</td>
+              <td>{{ admin.last_login}}</td>
             </tr>
             {% endfor %}
           </tbody>

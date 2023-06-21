@@ -5,12 +5,13 @@
 
 <main>
   <br />
+
   <br />
   <div class="container-fluid px-4">
     <div class="card mb-4">
       <div class="card-header">
         <i class="fas fa-table me-1"></i>
-        Student's Attendences
+        Teacher's Attendences
       </div>
       <div class="card-body">
         <table id="datatablesSimple" class="table table-hover">
@@ -23,10 +24,10 @@
               <th>Semester</th>
               <th>Date</th>
               <th>Time</th>
-              <th>Roll No</th>
               <th>Status</th>
               <th>Gender</th>
               <th>UserType</th>
+              <th>Roll</th>
             </tr>
           </thead>
 
@@ -39,10 +40,10 @@
               <th>Semester</th>
               <th>Date</th>
               <th>Time</th>
-              <th>Roll No</th>
               <th>Status</th>
               <th>Gender</th>
               <th>user Type</th>
+              <th>Roll</th>
             </tr>
           </tfoot>
           <tbody>
@@ -59,10 +60,10 @@
               <td>{{ at.sem}}</td>
               <td>{{ at.date}}</td>
               <td>{{ at.time}}</td>
-              <td>{{ at.roll_num}}</td>
               <td>{{ at.ststus}}</td>
               <td>{{ at.gender}}</td>
               <td>{{ at.usertype}}</td>
+              <td>{{ at.roll_num}}</td>
             </tr>
             {% endfor %}
           </tbody>

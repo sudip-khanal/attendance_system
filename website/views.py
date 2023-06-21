@@ -1,3 +1,13 @@
+import base64
+import urllib
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+import io
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+import webbrowser
+from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .forms import SignUpForm, LoginForm, AttendanceReportForm, TeacherUpdateForm, StudentUpdateForm
@@ -20,16 +30,16 @@ from website.detection import FaceRecognition
 faceRecognition = FaceRecognition()
 
 
-def home(request):
-    return render(request, 'home.html', {})
+# def login_view(request):
+#     return render(request, 'login_view.html', {})
 
 
-def Aboutus(request):
-    return render(request, 'about.html', {})
+# def Aboutus(request):
+#     return render(request, 'about.html', {})
 
 
-def Contactus(request):
-    return render(request, 'contact.html', {})
+# def Contactus(request):
+#     return render(request, 'contact.html', {})
 
 # Multi user registration
 
@@ -152,16 +162,41 @@ def View_admin(request):
 
 
 def FaceReco(request):
-    face = faceRecognition.recognizeFace()
-    messages.info(request, "Attendance Marked Successfully...")
-    return redirect('attendence')
+    face_recognition = FaceRecognition()
+    # Perform face recognition
+    face_recognition.recognizeFace()
+    # Check if the attendance was marked successfully
+    if face_recognition.mark_attendance:
+        messages.success(request, "Attendance Marked Successfully")
+    else:
+        messages.warning(
+            request, " Attendance has already been marked with this face for today.")
+    return redirect('AllAdtendance')
+
+# attendence of all users
+
+
+@login_required(login_url='login_view')
+def AllAdtendance(request):
+    # Fetch all  objects from the database
+    Attendences = Attendance.objects.all()
+    AttendanceData = {
+        'Attendences': Attendences
+    }
+    if request.user.userType == 'admin' or request.user.userType == 'teacher':
+        return render(request, 'Admin/AlluserAtd.html', AttendanceData)
+    else:
+        messages.warning(
+            request, "You Must Be Logged In As Admin or Teacher To View This Page")
+        return redirect('login_view')
 
 # # students data Table view
 
 
 @login_required(login_url='login_view')
 def Stdtendance(request):
-    Attendences = Attendance.objects.all()  # Fetch all  objects from the database
+    # Fetch all  objects from the database
+    Attendences = Attendance.objects.filter(usertype='student')
     AttendanceData = {
         'Attendences': Attendences
     }
@@ -172,6 +207,20 @@ def Stdtendance(request):
             request, "You Must Be Logged In As Admin or Teacher To View This Page")
         return redirect('login_view')
 
+
+@login_required(login_url='login_view')
+def Teacherattendance(request):
+    # Fetch all  objects from the database
+    Attendences = Attendance.objects.filter(usertype='teacher')
+    AttendanceData = {
+        'Attendences': Attendences
+    }
+    if request.user.userType == 'admin' or request.user.userType == 'teacher':
+        return render(request, 'Admin/teacterattendence.html', AttendanceData)
+    else:
+        messages.warning(
+            request, "You Must Be Logged In As Admin or Teacher To View This Page")
+        return redirect('login_view')
 # Attendence record view
 
 
@@ -249,6 +298,23 @@ def Update_Stdrecord(request, pk):
             request, "You must be  logged in to update the records")
         return redirect('login_view')
 
+# admins data
+
+
+@login_required(login_url='login_view')
+def admin_data(request):
+    students = get_user_model().objects.filter(
+        userType="admin")  # Fetch all  objects from the database
+    AdmData = {
+        'admins': students
+    }
+    if request.user.userType == 'admin':
+        return render(request, 'Admin/detail_admin.html', AdmData)
+    else:
+        messages.warning(
+            request, "You Must Be Logged In As Admin To View This Page")
+        return redirect('login_view')
+
 # #  Teachers Data
 
 
@@ -262,7 +328,7 @@ def TeaData(request):
         return render(request, 'Admin/teacherdata.html', teacherData)
     else:
         messages.warning(request, "You Must Be Logged In View The Page")
-        return redirect('home')
+        return redirect('login_view')
 
 
 @login_required(login_url='login_view')
@@ -415,13 +481,13 @@ class AttendanceReportView(FormView):
         user = self.request.user
 
         # Retrieve attendance records for the user within the specified date range
-        stattendances = Attendance.objects.filter(
+        attendances = Attendance.objects.filter(
             username=user, date__range=(start_date, end_date))
-        presentdays = stattendances.filter(ststus='Present').count()
+        presentdays = attendances.filter(ststus='Present').count()
         absentdays = num_days - presentdays
 
         # Iterate through the stattendances and retrieve first_name and last_name
-        for name in stattendances:
+        for name in attendances:
             f_name = name.first_name
             l_name = name.last_name
         context = {
@@ -432,7 +498,7 @@ class AttendanceReportView(FormView):
             'num_days': num_days,
             'presentdays': presentdays,
             'absentdays': absentdays,
-            'stattendances': stattendances,
+            'attendances': attendances,
         }
 
         # Render the HTML template with context data
@@ -454,3 +520,18 @@ class AttendanceReportView(FormView):
         # Write the PDF content to the response
         response.write(pdf_file.getvalue())
         return response
+
+# opens dataset image folder
+
+
+def open_Dataset_folder(request):
+    folder_name = 'dataset'
+    folder_path = os.path.join(settings.BASE_DIR, 'website', folder_name)
+
+    if os.path.exists(folder_path):
+        webbrowser.open(folder_path)
+    else:
+        # Folder doesn't exist
+        messages.warning(request, "Folder not found")
+
+    return redirect('adminpage')

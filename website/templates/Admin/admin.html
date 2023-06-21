@@ -65,14 +65,23 @@
 
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="#">View Details</a>
+                            <a class="small text-white stretched-link" href="{% url 'adminData' %}">View Details</a>
+                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="card bg-secondary text-white mb-4">
+                        <div class="card-body">All User's Attendances Details</div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small text-white stretched-link" href="{% url 'AllAdtendance' %}">View Details</a>
                             <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-primary text-white mb-4">
-                        <div class="card-body">Attendances Details</div>
+                        <div class="card-body">Student's Attendances Details</div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
                             <a class="small text-white stretched-link" href="{% url 'attendence' %}">View Details</a>
                             <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -80,11 +89,24 @@
                     </div>
                 </div>
                 <div class="col-xl-3 col-md-6">
-                     <form action="{% url 'faceReconization' %}" method="post">
-                        {% csrf_token %}
-                        <button class="btn btn-success text-white  " type="submit">Take Attendances </button>
-                    </form> 
+                    <div class="card bg-warning text-white mb-4">
+                        <div class="card-body"> Teacher's Attendances Details</div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small text-white stretched-link" href="{% url 'teacherattendence' %}">View Details</a>
+                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
                 </div>
+                <div class="col-xl-3 col-md-6">
+                    <form action="{% url 'faceReconization' %}" method="post">
+                       {% csrf_token %}
+                       <button class="btn btn-success text-white  " type="submit">Take Attendances </button>
+                   </form> 
+               </div>
+                <div class="col-xl-3 col-md-2">
+                    <a class="btn btn-primary" href="{% url 'viewDataset' %}"> View Dataset </a>
+               </div>
+                <br><br>
             {% comment %} <div class="row">
                 <div class="col-xl-6">
                     <div class="card mb-4">

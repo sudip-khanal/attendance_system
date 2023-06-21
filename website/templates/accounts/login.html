@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{% comment %} <!DOCTYPE html>
 {% load static %}
 <html lang="en">
   <head>
@@ -33,19 +33,23 @@
     <title>user login</title>
   </head>
   <body>
-    {% if messages %} {% for message in messages %}
-    <div class="alert alert-secondary alert-dismissible fade show" role="alert">
-      {{ message }}
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="alert"
-        aria-label="Close"
-      ></button>
-    </div>
-    {% endfor %} {% endif %}
     <div class="content">
       <div class="container">
+        {% if messages %} {% for message in messages %}
+        <div
+          class="alert alert-secondary alert-dismissible fade show"
+          role="alert"
+        >
+          {{ message }}
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+          {% endfor %}
+        </div>
+        {% endif %}
         <div class="row justify-content-center">
           <!-- <div class="col-md-6 order-md-2">
           <img src="images/undraw_file_sync_ot38.svg" alt="Image" class="img-fluid">
@@ -105,3 +109,111 @@
     <script src="{% static 'js/main.js' %}"></script>
   </body>
 </html>
+{% endcomment %}
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="{% static 'fonts/icomoon/style.css' %}" />
+
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+
+    <!-- Style -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+    <title>user login</title>
+  </head>
+  <body>
+    <div class="content">
+      {% if messages %} {% for message in messages %}
+      <div class="alert alert-warning" role="alert" id="auto-dismiss-alert">
+        {{ message }} {% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6 contents">
+            <div class="row justify-content-center">
+              <div class="col-md-12">
+                <div class="form-block">
+                  <div class="mb-4"></div>
+                  Login page {% if msg %}
+                  <div
+                    class="alert alert-warning alert-dismissible fade show"
+                    role="alert"
+                  >
+                    {{ msg | safe }}
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="alert"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  {% endif %}
+
+                  <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group first">
+                      <label for="username">Username</label>
+                      {{ form.username }}
+                    </div>
+                    <div class="form-group last mb-4">
+                      <label for="username">Password</label>
+                      {{ form.password }}
+                    </div>
+
+                    <div>
+                      <span class="ml-auto">
+                        <a href="{% url 'password_reset' %}" class=""
+                          >Forgot Password</a
+                        >
+                      </span>
+                    </div>
+
+                    <input
+                      type="submit"
+                      value="Log In"
+                      class="btn text-white btn-block btn-primary"
+                    />
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  // Automatically dismiss the alert after 5 seconds (5000 milliseconds)
+  setTimeout(function () {
+    var autoDismissAlert = document.getElementById("auto-dismiss-alert");
+    if (autoDismissAlert) {
+      autoDismissAlert.alert("close");
+    }
+  }, 500);
+</script>

@@ -1,5 +1,5 @@
  {% extends 'Admin/admain.html' %} {% block content %}
-</br>
+ </br>
 <script>
   function showForm(userType) {
     var studentForm = document.getElementById("student-form");
@@ -24,8 +24,10 @@
       teacherForm.style.display = "none"; // Hide the teacher form
       adminForm.style.display = "none";
     }
-  }
-</script>
+  } 
+</script> 
+
+
 <div class="content">
   <div class="container">
     <div class="row justify-content-center">
@@ -34,16 +36,16 @@
        
          
         <div class="form-group">
-          <label for="user-type">User Type:</label>
+          <label for="user-type">Choose Forms:</label>
           <select id="user-type" onchange="showForm(this.value)">
-            <option value="">Select User Type</option>
-            <option value="student">Student</option>
-            <option value="teacher">Teacher</option>
-            <option value="admin">Admin</option>
+            <option value="student">Select signup Form</option>
+            <option value="student">Student signup Form</option>
+            <option value="teacher">Teacher signup Form</option>
+            <option value="admin">Admin signup Form</option>
           </select>
         </div></br></br>
      
-      <form method="POST" id="student-form" class="registration-form" style="display: none;"> 
+      <form method="POST" id="student-form" class="registration-form"> 
       {% if form.errors %}
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
         Your Form Has Errors

@@ -10,11 +10,13 @@
   <div class="container-fluid px-4">
     <div class="card mb-4">
       <a
+        id="export-reports-btn"
         class="btn btn-secondary text-white"
         href="{% url 'attendance_report' %}"
       >
         Export Reports</a
       >
+
       <div class="card-header">
         <i class="fas fa-table me-1"></i>
         Attendences Records
@@ -88,5 +90,33 @@
   crossorigin="anonymous"
 ></script>
 <script src="/static/assets/js/datatables-simple-demo.js"></script>
+<script>
+  document
+    .getElementById("export-reports-btn")
+    .addEventListener("click", function () {
+      var selectedUsername = document.querySelector(
+        "#datatablesSimple tbody tr.selected td:nth-child(2)"
+      ).textContent;
+
+      if (selectedUsername) {
+        // Make an AJAX request to the server with the selected username
+        var xhr = new XMLHttpRequest();
+        xhr.open(
+          "GET",
+          "{% url 'attendance_report' %}?username=" + selectedUsername,
+          true
+        );
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            // Process the received report data as needed
+            var reportData = xhr.responseText;
+            // Display or manipulate the report data in the desired way
+            console.log(reportData);
+          }
+        };
+        xhr.send();
+      }
+    });
+</script>
 
 {% endblock javascripts %}
