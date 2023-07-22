@@ -1,8 +1,7 @@
+from django.http import HttpResponse
 import base64
-import urllib
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-import io
 import numpy as np
 import matplotlib.pyplot as plt
 import os
@@ -22,6 +21,7 @@ from datetime import date
 from django.template.loader import render_to_string
 from xhtml2pdf import pisa
 from io import BytesIO
+from django.db.models import Q
 
 
 from website.detection import FaceRecognition
@@ -535,3 +535,11 @@ def open_Dataset_folder(request):
         messages.warning(request, "Folder not found")
 
     return redirect('adminpage')
+
+
+def Grnerate_report(request):
+    usernames = User.objects.filter(Q(userType='student') | Q(
+        userType='teacher')).values_list('username', flat=True)
+
+    username = {"usernames": usernames}
+    return render(request, 'Admin/report.html', username)

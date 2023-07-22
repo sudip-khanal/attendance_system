@@ -16,7 +16,6 @@
         <table id="datatablesSimple" class="table table-hover">
           <thead>
             <tr>
-              <th>Id</th>
               <th>UserName</th>
               <th>Name</th>
               <th>Faculty</th>
@@ -32,7 +31,6 @@
 
           <tfoot>
             <tr>
-              <th>Id</th>
               <th>UserName</th>
               <th>Name</th>
               <th>Faculty</th>
@@ -48,7 +46,6 @@
           <tbody>
             {% for at in Attendences %}
             <tr>
-              <td>{{at.id}}</td>
               <td>
                 <a href="{% url 'Recordattendance' at.username %}">
                   {{ at.username }}

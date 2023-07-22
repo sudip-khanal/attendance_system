@@ -2,77 +2,79 @@
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %} {% block content %}
+<div class="container-fluid px-4">
+  <div class="card mb-4">
+    <a
+      class="btn btn-secondary text-white"
+      href="{% url 'attendance_report' %}"
+    >
+      Attendence Reports</a
+    >
+    {% comment %}
+    <a href="{% url 'export_csv' %}" class="btn btn-primary btn-sm float-end"
+      >Export CSV</a
+    >
+    {% endcomment %} {% comment %}
+    <a href="{% url 'export_pdf' %}" class="btn btn-primary btn-sm float-end"
+      >Export PDF</a
+    >
+    {% endcomment %}
+    <div class="card-header">
+      <i class="fas fa-table me-1"></i>
+      Attendences Records
+    </div>
+    <div class="card-body">
+      <table id="datatablesSimple" class="table table-hover">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Name</th>
+            <th>Faculty</th>
+            <th>Semester</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Roll No</th>
+            <th>Status</th>
+            <th>Gender</th>
+          </tr>
+        </thead>
 
-<main>
-  <br />
-  <br />
-
-  <div class="container-fluid px-4">
-    <div class="card mb-4">
-      <a
-        id="export-reports-btn"
-        class="btn btn-secondary text-white"
-        href="{% url 'attendance_report' %}"
-      >
-        Export Reports</a
-      >
-
-      <div class="card-header">
-        <i class="fas fa-table me-1"></i>
-        Attendences Records
-      </div>
-      <div class="card-body">
-        <table id="datatablesSimple" class="table table-hover">
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>Username</th>
-              <th>Name</th>
-              <th>Faculty</th>
-              <th>Semester</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Roll No</th>
-              <th>Status</th>
-              <th>Gender</th>
-            </tr>
-          </thead>
-
-          <tfoot>
-            <tr>
-              <th>Id</th>
-              <th>Username</th>
-              <th>Name</th>
-              <th>Faculty</th>
-              <th>Semester</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Roll No</th>
-              <th>Status</th>
-              <th>Gender</th>
-            </tr>
-          </tfoot>
-          <tbody>
-            {% for d in datas %}
-            <tr>
-              <td>{{ d.id}}</td>
-              <td>{{d.username}}</td>
-              <td>{{ d.first_name }} {{ d.last_name }}</td>
-              <td>{{ d.faculty}}</td>
-              <td>{{ d.sem}}</td>
-              <td>{{ d.date}}</td>
-              <td>{{ d.time}}</td>
-              <td>{{ d.roll_num}}</td>
-              <td>{{ d.ststus}}</td>
-              <td>{{ d.gender}}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+        <tfoot>
+          <tr>
+            <th>Username</th>
+            <th>Name</th>
+            <th>Faculty</th>
+            <th>Semester</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Roll No</th>
+            <th>Status</th>
+            <th>Gender</th>
+          </tr>
+        </tfoot>
+        <tbody>
+          {% for d in datas %}
+          <tr>
+            <td>
+              <a href="{% url 'my_view_function' username=d.username %}"
+                >{{ d.username }}</a
+              >
+            </td>
+            <td>{{ d.first_name }} {{ d.last_name }}</td>
+            <td>{{ d.faculty}}</td>
+            <td>{{ d.sem}}</td>
+            <td>{{ d.date}}</td>
+            <td>{{ d.time}}</td>
+            <td>{{ d.roll_num}}</td>
+            <td>{{ d.ststus}}</td>
+            <td>{{ d.gender}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   </div>
-</main>
+</div>
 
 {% endblock content %}
 
@@ -90,33 +92,5 @@
   crossorigin="anonymous"
 ></script>
 <script src="/static/assets/js/datatables-simple-demo.js"></script>
-<script>
-  document
-    .getElementById("export-reports-btn")
-    .addEventListener("click", function () {
-      var selectedUsername = document.querySelector(
-        "#datatablesSimple tbody tr.selected td:nth-child(2)"
-      ).textContent;
-
-      if (selectedUsername) {
-        // Make an AJAX request to the server with the selected username
-        var xhr = new XMLHttpRequest();
-        xhr.open(
-          "GET",
-          "{% url 'attendance_report' %}?username=" + selectedUsername,
-          true
-        );
-        xhr.onreadystatechange = function () {
-          if (xhr.readyState === 4 && xhr.status === 200) {
-            // Process the received report data as needed
-            var reportData = xhr.responseText;
-            // Display or manipulate the report data in the desired way
-            console.log(reportData);
-          }
-        };
-        xhr.send();
-      }
-    });
-</script>
 
 {% endblock javascripts %}
