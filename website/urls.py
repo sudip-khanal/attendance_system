@@ -57,7 +57,6 @@ urlpatterns = [
     # path('my-view-url/<str:username>/',
     # views.my_view_function, name='my_view_function'),
 
-    path('grnerate_report/', views.Grnerate_report, name='grnerate_report'),
 
 
 ]

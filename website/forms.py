@@ -1,8 +1,9 @@
+from django.db.models import Q
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth import password_validation
 from django.utils.translation import gettext_lazy as _
-from website.models import User
+from requests import request
 
 from .models import User
 
@@ -170,13 +171,18 @@ class MyPasswordChange(PasswordChangeForm):
 
 # report form
 
-EXPORT_OPTIONS = (
-    ('pdf', 'Pdf'),
-    ('csv', 'Csv'),
-)
+
+# Define the choices for the 'format' field
+EXPORT_OPTIONS = [('pdf', 'PDF'), ('csv', 'CSV')]
 
 
-class AttendanceReportForm(forms.Form):
+class AttendanceReportFormAdmin(forms.Form):
+    username = forms.ChoiceField(
+        choices=[],  # Populate the choices dynamically later
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label="Select username"
+    )
+
     start_date = forms.DateField(
         widget=forms.DateInput(
             attrs={'type': 'date', 'class': 'form-control', 'format': 'yyyy-mm-dd'}),
@@ -193,6 +199,41 @@ class AttendanceReportForm(forms.Form):
         widget=forms.Select(attrs={'class': 'form-control'}),
         label="Choose Format"
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Dynamically populate the 'username' choices with all usernames
+        usernames = User.objects.filter(Q(userType='student') | Q(
+            userType='teacher')).values_list('username', flat=True)
+        self.fields['username'].choices = [
+            (username, username) for username in usernames]
+
+
+class AttendanceReportFormUser(forms.Form):
+    username = forms.CharField(
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'}),
+        required=True,
+        label="Username"
+    )
+
+    start_date = forms.DateField(
+        widget=forms.DateInput(
+            attrs={'type': 'date', 'class': 'form-control', 'format': 'yyyy-mm-dd'}),
+        label="From Date"
+    )
+    end_date = forms.DateField(
+        widget=forms.DateInput(
+            attrs={'type': 'date', 'class': 'form-control', 'format': 'yyyy-mm-dd'}),
+        label="To Date"
+    )
+    format = forms.ChoiceField(
+        required=True,
+        choices=EXPORT_OPTIONS,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label="Choose Format"
+    )
+
 
 # update user form
 

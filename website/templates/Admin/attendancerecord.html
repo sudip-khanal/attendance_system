@@ -4,21 +4,6 @@
 {% block stylesheets %}{% endblock stylesheets %} {% block content %}
 <div class="container-fluid px-4">
   <div class="card mb-4">
-    <a
-      class="btn btn-secondary text-white"
-      href="{% url 'attendance_report' %}"
-    >
-      Attendence Reports</a
-    >
-    {% comment %}
-    <a href="{% url 'export_csv' %}" class="btn btn-primary btn-sm float-end"
-      >Export CSV</a
-    >
-    {% endcomment %} {% comment %}
-    <a href="{% url 'export_pdf' %}" class="btn btn-primary btn-sm float-end"
-      >Export PDF</a
-    >
-    {% endcomment %}
     <div class="card-header">
       <i class="fas fa-table me-1"></i>
       Attendences Records
@@ -55,11 +40,7 @@
         <tbody>
           {% for d in datas %}
           <tr>
-            <td>
-              <a href="{% url 'my_view_function' username=d.username %}"
-                >{{ d.username }}</a
-              >
-            </td>
+            <td>{{d.username}}</td>
             <td>{{ d.first_name }} {{ d.last_name }}</td>
             <td>{{ d.faculty}}</td>
             <td>{{ d.sem}}</td>

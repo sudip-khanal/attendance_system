@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 import base64
 from matplotlib.figure import Figure
@@ -9,7 +10,7 @@ import webbrowser
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
-from .forms import SignUpForm, LoginForm, AttendanceReportForm, TeacherUpdateForm, StudentUpdateForm
+from .forms import AttendanceReportFormAdmin, AttendanceReportFormUser, SignUpForm, LoginForm, TeacherUpdateForm, StudentUpdateForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import User, Attendance
@@ -21,7 +22,6 @@ from datetime import date
 from django.template.loader import render_to_string
 from xhtml2pdf import pisa
 from io import BytesIO
-from django.db.models import Q
 
 
 from website.detection import FaceRecognition
@@ -434,31 +434,40 @@ def logout_user(request):
     messages.warning(request, "You have been Logged out..")
     return redirect('login_view')
 
+
 # # generate Attendence report
 
 
-class AttendanceReportView(FormView):
+class AttendanceReportView(LoginRequiredMixin, FormView):
+    template_name = 'Admin/report.html' or 'Student/attendance_report.html'
+    login_url = '/login_view/'  # Replace with your login URL if different
 
-    template_name = 'Student/attendance_report.html'
-    form_class = AttendanceReportForm
+    def get_form_class(self):
+        # Based on the user type (admin or user), return the appropriate form class
+        if self.request.user.userType == 'admin':
+            return AttendanceReportFormAdmin
+        elif self.request.user.userType in ['student', 'teacher']:
+            return AttendanceReportFormUser
 
     def form_valid(self, form):
+        user = form.cleaned_data['username']
         start_date = form.cleaned_data['start_date']
         end_date = form.cleaned_data['end_date']
         export_format = form.cleaned_data['format']
         num_days = (end_date - start_date).days
         # Generate report based on the selected format
         if export_format == 'csv':
-            return self.generate_csv_report(start_date, end_date)
+            return self.generate_csv_report(start_date, end_date, user)
         elif export_format == 'pdf':
-            return self.generate_pdf_report(start_date, end_date, num_days)
+            return self.generate_pdf_report(start_date, end_date, num_days, user)
         else:
             # Handle unsupported format gracefully
-            return self.render_to_response(self.get_context_data(form=form))
+            return super().form_valid(form)
 
-    def generate_csv_report(self, start_date, end_date):
+    def generate_csv_report(self, start_date, end_date, user):
+        print(user)
         # Generate CSV report logic using the specified date range
-        user = self.request.user
+
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="attendance_report.csv"'
         # Write CSV content to the response object
@@ -474,18 +483,19 @@ class AttendanceReportView(FormView):
         for stat in stattendances:
             writer.writerow([stat.username, stat.first_name, stat.faculty, stat.sem,
                             stat.date, stat.time, stat.roll_num, stat.ststus, stat.gender])
-
         return response
 
-    def generate_pdf_report(self, start_date, end_date, num_days):
-        user = self.request.user
+    def generate_pdf_report(self, start_date, end_date, num_days, user):
+        print(user)
 
         # Retrieve attendance records for the user within the specified date range
         attendances = Attendance.objects.filter(
             username=user, date__range=(start_date, end_date))
         presentdays = attendances.filter(ststus='Present').count()
         absentdays = num_days - presentdays
-
+        # Initialize f_name and l_name with None or some default values
+        f_name = None
+        l_name = None
         # Iterate through the stattendances and retrieve first_name and last_name
         for name in attendances:
             f_name = name.first_name
@@ -513,9 +523,9 @@ class AttendanceReportView(FormView):
         # Set the position of the PDF file to the beginning
         pdf_file.seek(0)
 
-        # Create the HTTP response with appropriate headers
+       # Create the HTTP response with appropriate headers
         response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="attendance_report.pdf"'
+        response['Content-Disposition'] = 'inline; filename="attendance_report.pdf"'
 
         # Write the PDF content to the response
         response.write(pdf_file.getvalue())
@@ -535,11 +545,3 @@ def open_Dataset_folder(request):
         messages.warning(request, "Folder not found")
 
     return redirect('adminpage')
-
-
-def Grnerate_report(request):
-    usernames = User.objects.filter(Q(userType='student') | Q(
-        userType='teacher')).values_list('username', flat=True)
-
-    username = {"usernames": usernames}
-    return render(request, 'Admin/report.html', username)
