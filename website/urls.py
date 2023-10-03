@@ -6,12 +6,8 @@ from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
-    # path('', views.home, name='home'),
     path('', views.login_view, name='login_view'),
     path('logout/', views.logout_user, name='logout'),
-    # path('about_us/', views.Aboutus, name='about_us'),
-    # path('contact_us/', views.Contactus, name='contact_us'),
-
     path('signup/', views.register, name='signup'),
     path('adminpage/', views.View_admin, name='adminpage'),
     path('teacher/', views.Teacher, name='teacher'),
@@ -54,9 +50,5 @@ urlpatterns = [
          name='attendance_report'),
     path('viewDataset/', views.open_Dataset_folder, name='viewDataset'),
     path('adminData/', views.admin_data, name='adminData'),
-    # path('my-view-url/<str:username>/',
-    # views.my_view_function, name='my_view_function'),
-
-
 
 ]

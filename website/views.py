@@ -30,20 +30,6 @@ from website.detection import FaceRecognition
 faceRecognition = FaceRecognition()
 
 
-# def login_view(request):
-#     return render(request, 'login_view.html', {})
-
-
-# def Aboutus(request):
-#     return render(request, 'about.html', {})
-
-
-# def Contactus(request):
-#     return render(request, 'contact.html', {})
-
-# Multi user registration
-
-
 @login_required(login_url='login_view')
 def register(request):
     msg = None
