@@ -44,7 +44,7 @@ def register(request):
                 user.is_superuser = False
                 user.save()
                 id = user.id
-                addFace(id)
+                addFace(id, request)
                 return redirect('adminpage')
 
             elif user_type == 'teacher':
@@ -76,7 +76,6 @@ def register(request):
 #  Face Recognization
 
 
-@login_required(login_url='login_view')
 def addFace(id, request):
     user_id = id
     print("usersid", user_id)
