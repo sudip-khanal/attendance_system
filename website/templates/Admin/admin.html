@@ -1,185 +1,157 @@
-
-{% extends 'Admin/admain.html' %}
-
-{% block title %} Dashboard {% endblock %} 
+{% extends 'Admin/admain.html' %} {% block title %} Dashboard {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+<div class="content">
+  <br />
+  {% if messages %} {% for message in messages %}
+  <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  {% endfor %} {% endif %}
 
-{% block content %}
-
-    <main>
-        <br> 
-    {% if messages %}
-    {% for message in messages %}
-      <div class="alert alert-secondary alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    {% endfor %}
-    {% endif %}
-    
-        <div class="container-fluid px-4">
-            <h1 class="mt-4">Admin Dashboard</h1>
-            <ol class="breadcrumb mb-4">
-            </ol>
-            <div class="row">
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-success text-white mb-4">
-                        <div class="card-body">Users 
-                            <h3>{{ total_user }}</h3>
-                        </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="{% url 'signup' %}">Add User</a>
-                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <div class="card-body">Student Details
-                            <h3>{{ total_students }}</h3>
-                        </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="{% url 'Stdata' %}">View Details</a>
-                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-warning text-white mb-4">
-                        <div class="card-body">Teacher Details
-                            <h3>{{ total_teachers }}</h3>
-
-                        </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="{% url 'teacherdata' %}">View Details</a>
-                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-success text-white mb-4">
-                        <div class="card-body">Admin Details
-                            <h3>{{ total_admins }}</h3>
-
-                        </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="{% url 'adminData' %}">View Details</a>
-                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-secondary text-white mb-4">
-                        <div class="card-body">All User's Attendances Details</div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="{% url 'AllAdtendance' %}">View Details</a>
-                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <div class="card-body">Student's Attendances Details</div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="{% url 'attendence' %}">View Details</a>
-                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-warning text-white mb-4">
-                        <div class="card-body"> Teacher's Attendances Details</div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="{% url 'teacherattendence' %}">View Details</a>
-                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                        </div>
-                    </div>
-                </div>
-          
-               <div class="col-xl-3 col-md-6">
-                <div class="card bg-secondary text-white mb-4">
-                    <div class="card-body"> Generate Report</div>
-                    <div class="card-footer d-flex align-items-center justify-content-between">
-                        <a class="small text-white stretched-link" href="{% url 'attendance_report' %}">View Details</a>
-                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-md-6">
-                <form action="{% url 'faceReconization' %}" method="post">
-                   {% csrf_token %}
-                   <button class="btn btn-success text-white  " type="submit">Take Attendances </button>
-               </form> 
-           </div>
-            <div class="col-xl-3 col-md-2">
-                <a class="btn btn-primary" href="{% url 'viewDataset' %}"> View Dataset </a>
-           </div>
-                <br><br>
-
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-table me-1"></i>
-                    Users DataTable 
-                </div>
-                <div class="card-body">
-                    <table id="datatablesSimple">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Name</th>
-                                <th>email</th>
-                                <th>username</th>
-                                <th>User Type</th>
-                                <th>Joined Date</th>
-                                
-                            </tr>
-                        </thead>
-                     
-                          
-                        <tfoot>
-                       
-                            <tr>
-                                <th>Id</th>
-                                <th>Name</th>
-                                <th>email</th>
-                                <th>username</th>
-                                <th>User Type</th>
-                                <th>Joined Date</th>
-                            </tr>
-                        </tfoot>
-                           
-                        <tbody>
-                            {% for user in users %}
-                            <tr>
-                              <td>{{ user.id}}  </td>
-                              <td>{{ user.first_name }} {{ user.last_name }}</td>
-                              <td>{{ user.email }}</td>
-                              <td>{{ user.username }}</td>
-                              <td>{{ user.userType }}</td>
-                              <td>{{ user.date_joined }} </td>
-                              
-                          </tr>
-                          {% endfor %} 
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+  <div class="container-fluid px-4">
+    <h1 class="mt-4">Admin Dashboard</h1>
+    <ol class="breadcrumb mb-4"></ol>
+    <div class="row">
+      <div class="col-xl-3 col-md-6">
+        <div class="card bg-success text-white mb-4">
+          <div class="card-body">
+            Total Users
+            <h3>{{ total_user }}</h3>
+          </div>
         </div>
-    </main>
+      </div>
+      <div class="col-xl-3 col-md-6">
+        <div class="card bg-primary text-white mb-4">
+          <div class="card-body">
+            Total Students
+            <h3>{{ total_students }}</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6">
+        <div class="card bg-warning text-white mb-4">
+          <div class="card-body">
+            Total Teachers
+            <h3>{{ total_teachers }}</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-md-6">
+        <div class="card bg-secondary text-white mb-4">
+          <div class="card-body">
+            Total Admin
+            <h3>{{ total_admins }}</h3>
+          </div>
+        </div>
+      </div>
+      {% comment %}
+      <div class="col-xl-3 col-md-6">
+        <div class="card bg-secondary text-white mb-4">
+          <div class="card-body">Generate Report</div>
+          <div
+            class="card-footer d-flex align-items-center justify-content-between"
+          >
+            <button
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#myModal"
+            >
+              Generate Report
+            </button>
+            <div class="small text-white">
+              <i class="fas fa-angle-right"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endcomment %} {% comment %}
+    <div class="col-xl-3 col-md-6">
+      <form action="{% url 'faceReconization' %}" method="post">
+        {% csrf_token %}
+        <button class="btn btn-success text-white" type="submit">
+          Take Attendances
+        </button>
+      </form>
+    </div>
+    {% endcomment %}
 
-{% endblock content %}
+    <div class="card mb-4">
+      <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        Users DataTable
+      </div>
+      <div class="card-body">
+        <table id="datatablesSimple">
+          <thead>
+            <tr>
+              <th>S.N</th>
+              {% comment %}
+              <th>Id</th>
+              {% endcomment %}
+              <th>Name</th>
+              <th>email</th>
+              <th>username</th>
+              <th>User Type</th>
+              <th>Joined Date</th>
+            </tr>
+          </thead>
 
-<!-- Specific Page JS goes HERE  -->
-{% block javascripts %}
+          <tfoot>
+            <tr>
+              <th>S.N</th>
+              {% comment %}
+              <th>Id</th>
+              {% endcomment %}
+              <th>Name</th>
+              <th>email</th>
+              <th>username</th>
+              <th>User Type</th>
+              <th>Joined Date</th>
+            </tr>
+          </tfoot>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="/static/assets/demo/chart-area-demo.js"></script>
-    <script src="/static/assets/demo/chart-bar-demo.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-    <script src="/static/assets/js/datatables-simple-demo.js"></script>
+          <tbody>
+            {% for user in users %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              {% comment %}
+              <td>{{ user.id}}</td>
+              {% endcomment %}
+              <td>{{ user.first_name }} {{ user.last_name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.username }}</td>
+              <td>{{ user.userType }}</td>
+              <td>{{ user.date_joined }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
-{% endblock javascripts %}
+  {% endblock content %}
 
+  <!-- Specific Page JS goes HERE  -->
+  {% block javascripts %}
 
+  <script
+    src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"
+    crossorigin="anonymous"
+  ></script>
+  <script src="/static/assets/js/datatables-simple-demo.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  {% endblock javascripts %}
+</div>

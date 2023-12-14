@@ -12,6 +12,7 @@
       <table id="datatablesSimple" class="table table-hover">
         <thead>
           <tr>
+            <th>S.N</th>
             <th>Username</th>
             <th>Name</th>
             <th>Faculty</th>
@@ -26,6 +27,7 @@
 
         <tfoot>
           <tr>
+            <th>S.N</th>
             <th>Username</th>
             <th>Name</th>
             <th>Faculty</th>
@@ -40,6 +42,7 @@
         <tbody>
           {% for d in datas %}
           <tr>
+            <td>{{forloop.counter}}</td>
             <td>{{d.username}}</td>
             <td>{{ d.first_name }} {{ d.last_name }}</td>
             <td>{{ d.faculty}}</td>

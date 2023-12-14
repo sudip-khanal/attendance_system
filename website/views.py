@@ -1,14 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
-import base64
-from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-import numpy as np
-import matplotlib.pyplot as plt
 import os
 import webbrowser
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .forms import AttendanceReportFormAdmin, AttendanceReportFormUser, SignUpForm, LoginForm, TeacherUpdateForm, StudentUpdateForm
 from django.contrib import messages
@@ -54,7 +50,7 @@ def register(request):
                 user.is_superuser = False
                 user.save()
                 id = user.id
-                addFace(id)
+                addFace(id, request)
                 return redirect('adminpage')
 
             elif user_type == 'admin':
@@ -253,17 +249,38 @@ def stu_record(request, pk):
 # # Delete Student Record
 
 
-@login_required(login_url='login_view')
+# @login_required(login_url='login_view')
+# def Delete_Stdrecord(request, pk):
+#     if request.user.userType == 'admin':
+#         delete_it = get_user_model().objects.get(id=pk)
+#         delete_it.delete()
+#         messages.warning(request, "Record Deleeted Successfully .....")
+#         return redirect('Stdata')
+#     else:
+#         messages.warning(
+#             request, "You must have to logged in to delete the records")
+#         return redirect('login_view')
+##################################
+
+
+
 def Delete_Stdrecord(request, pk):
     if request.user.userType == 'admin':
-        delete_it = get_user_model().objects.get(id=pk)
-        delete_it.delete()
-        messages.warning(request, "Record Deleeted Successfully .....")
+        # Get the user to be deleted
+        delete_user = get_user_model().objects.get (id=pk)
+
+        # Delete attendance records for the user
+        Attendance.objects.filter(username=delete_user).delete()
+
+        # Delete the user
+        delete_user.delete()
+
+        messages.warning(request, "Record Deleted Successfully.")
         return redirect('Stdata')
     else:
-        messages.warning(
-            request, "You must have to logged in to delete the records")
+        messages.warning(request, "You must be logged in to delete records.")
         return redirect('login_view')
+
 
 # # Update Student Record
 
@@ -425,14 +442,28 @@ def logout_user(request):
 
 class AttendanceReportView(LoginRequiredMixin, FormView):
     template_name = 'Admin/report.html' or 'Student/attendance_report.html'
-    login_url = '/login_view/'  # Replace with your login URL if different
+    login_url = '/login_view/' 
 
+    def get_template_names(self):
+        if self.request.user.userType == 'admin':
+            return ['Admin/report.html']
+        elif self.request.user.userType == 'student':
+            return ['Student/attendance_report.html']
+        elif self.request.user.userType == 'teacher':
+            return ['Teacher/attendance_report.html']
+        # Add more conditions for other user types if needed
+        
     def get_form_class(self):
-        # Based on the user type (admin or user), return the appropriate form class
         if self.request.user.userType == 'admin':
             return AttendanceReportFormAdmin
-        elif self.request.user.userType in ['student', 'teacher']:
+        elif self.request.user.userType == 'student':
             return AttendanceReportFormUser
+        elif self.request.user.userType == 'teacher':
+            return AttendanceReportFormUser
+        else:
+            # Default to a generic form class if user type is not recognized
+            return None
+        
 
     def form_valid(self, form):
         user = form.cleaned_data['username']

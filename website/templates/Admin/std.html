@@ -27,52 +27,55 @@
         <table id="datatablesSimple" class="table table-hover">
           <thead>
             <tr>
+              <th>S.N</th>
               <th>Id</th>
-              <th>Joined Date</th>
               <th>Name</th>
-              <th>Email</th>
               <th>Roll No</th>
               <th>Faculty</th>
               <th>Semester</th>
               <th>DOB</th>
               <th>Gender</th>
-              <th>Phone No</th>
+              <th>Phone</th>
+              <th>Email</th>
               <th>Address</th>
+              <th>Joined at</th>
             </tr>
           </thead>
 
           <tfoot>
             <tr>
+              <th>S.N</th>
               <th>Id</th>
-              <th>Joined Date</th>
               <th>Name</th>
-              <th>Email</th>
               <th>Roll No</th>
               <th>Faculty</th>
               <th>Semester</th>
               <th>DOB</th>
               <th>Gender</th>
-              <th>Phone No</th>
+              <th>Phone</th>
+              <th>Email</th>
               <th>Address</th>
+              <th>Joine at</th>
             </tr>
           </tfoot>
 
           <tbody>
             {% for student in students %}
             <tr>
+              <td>{{forloop.counter}}</td>
               <td>
                 <a href="{% url 'record' student.id %}">{{ student.id}} </a>
               </td>
-              <td>{{ student.date_joined}}</td>
               <td>{{ student.first_name }} {{ student.last_name }}</td>
-              <td>{{ student.email }}</td>
               <td>{{ student.roll_num}}</td>
               <td>{{ student.faculty}}</td>
               <td>{{ student.semester}}</td>
               <td>{{ student.dob}}</td>
               <td>{{ student.gender}}</td>
               <td>{{ student.phone}}</td>
+              <td>{{ student.email }}</td>
               <td>{{ student.address}}</td>
+              <td>{{ student.date_joined}}</td>
             </tr>
             {% endfor %}
           </tbody>

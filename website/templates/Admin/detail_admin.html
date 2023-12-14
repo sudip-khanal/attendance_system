@@ -27,7 +27,10 @@
         <table id="datatablesSimple" class="table table-hover">
           <thead>
             <tr>
+              <th>S.N</th>
+              {% comment %}
               <th>Id</th>
+              {% endcomment %}
               <th>Joined Date</th>
               <th>Name</th>
               <th>Email</th>
@@ -40,7 +43,10 @@
 
           <tfoot>
             <tr>
+              <td>S.N</td>
+              {% comment %}
               <th>Id</th>
+              {% endcomment %}
               <th>Joined Date</th>
               <th>Name</th>
               <th>Email</th>
@@ -54,7 +60,10 @@
           <tbody>
             {% for admin in admins %}
             <tr>
+              <td>{{forloop.counter}}</td>
+              {% comment %}
               <td>{{ admin.id}}</td>
+              {% endcomment %}
               <td>{{ admin.date_joined}}</td>
               <td>{{ admin.first_name }} {{ admin.last_name }}</td>
               <td>{{ admin.email }}</td>
