@@ -1,102 +1,105 @@
-
-{% extends 'Admin/admain.html' %}
-
-{% block title %} Dashboard {% endblock %} 
+{% extends 'Admin/admain.html' %} {% block title %} Dashboard {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
-
-{% block content %}
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
 <main>
-    <br> 
-    {% if messages %}
-    {% for message in messages %}
-      <div class="alert alert-secondary alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  <br />
+  {% if messages %} {% for message in messages %}
+  <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  {% endfor %} {% endif %}
+  <br />
+
+  <div class="container-fluid px-4">
+    <div class="card mb-4">
+      <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        Students DataTable
       </div>
-    {% endfor %}
-    {% endif %}
-    <br>
-    
-        <div class="container-fluid px-4">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-table me-1"></i>
-                    Students DataTable 
-                </div>
-                <div class="card-body">
-                    <table id="datatablesSimple"  class="table table-hover">
-                        <thead>
-                            <tr>
-                            
-                                <th>Id</th>
-                                <th>Joined Date</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Roll No</th>
-                                <th>Faculty</th>
-                                <th>Semester</th>
-                                <th>DOB</th>
-                                <th>Gender</th>
-                                <th>Phone No</th>
-                                <th>Address</th>
-                            </tr>
-                        </thead>
-                     
-                          
-                        <tfoot>
-                       
-                            <tr>
-                                <th>Id</th>
-                                <th>Joined Date</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Roll No</th>
-                                <th>Faculty</th>
-                                <th>Semester</th>
-                                <th>DOB</th>
-                                <th>Gender</th>
-                                <th>Phone No</th>
-                                <th>Address</th>
-                            </tr>
-                        </tfoot>
-                           
-                        <tbody>
-                            {% for student in students %}
-                            <tr>
-                                <td><a href= "{% url 'record' student.id %}">{{ student.id}} </a> </td>
-                                <td>{{ student.date_joined}}  </td>
-                                <td>{{ student.first_name }} {{ student.last_name }}</td>
-                                <td>{{ student.email }}</td>
-                                <td>{{ student.roll_num}}  </td>
-                                <td>{{ student.faculty}}  </td>
-                                <td>{{ student.semester}}  </td>
-                                <td>{{ student.dob}}  </td>
-                                <td>{{ student.gender}}  </td>
-                                <td>{{ student.phone}}  </td>
-                                <td>{{ student.address}}  </td>
-                              
-                          </tr>
-                          {% endfor %} 
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </main>
+      <div class="card-body">
+        <table id="datatablesSimple" class="table table-hover">
+          <thead>
+            <tr>
+              <th>S.N</th>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Roll No</th>
+              <th>Faculty</th>
+              <th>Semester</th>
+              <th>DOB</th>
+              <th>Gender</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Address</th>
+              <th>Joined at</th>
+            </tr>
+          </thead>
+
+          <tfoot>
+            <tr>
+              <th>S.N</th>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Roll No</th>
+              <th>Faculty</th>
+              <th>Semester</th>
+              <th>DOB</th>
+              <th>Gender</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Address</th>
+              <th>Joine at</th>
+            </tr>
+          </tfoot>
+
+          <tbody>
+            {% for student in students %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td>
+                <a href="{% url 'record' student.id %}">{{ student.id}} </a>
+              </td>
+              <td>{{ student.first_name }} {{ student.last_name }}</td>
+              <td>{{ student.roll_num}}</td>
+              <td>{{ student.faculty}}</td>
+              <td>{{ student.semester}}</td>
+              <td>{{ student.dob}}</td>
+              <td>{{ student.gender}}</td>
+              <td>{{ student.phone}}</td>
+              <td>{{ student.email }}</td>
+              <td>{{ student.address}}</td>
+              <td>{{ student.date_joined}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
 
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="/static/assets/demo/chart-area-demo.js"></script>
-    <script src="/static/assets/demo/chart-bar-demo.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-    <script src="/static/assets/js/datatables-simple-demo.js"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
+  crossorigin="anonymous"
+></script>
+<script src="/static/assets/demo/chart-area-demo.js"></script>
+<script src="/static/assets/demo/chart-bar-demo.js"></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"
+  crossorigin="anonymous"
+></script>
+<script src="/static/assets/js/datatables-simple-demo.js"></script>
 
 {% endblock javascripts %}
-
-

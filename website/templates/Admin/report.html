@@ -1,0 +1,26 @@
+{% extends 'Admin/admain.html' %} {% block title %}Report{% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<main>
+  <div class="content">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6 contents">
+          <h3>Generate Report</h3>
+
+          <form method="post">
+            {% csrf_token %} {{ form.as_p }}
+            <button class="btn btn-primary" type="submit">
+              Generate Report
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="/static/assets/js/datatables-simple-demo.js"></script>
+
+    {% endblock content %}
+  </div>
+</main>

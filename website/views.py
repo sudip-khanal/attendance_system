@@ -1,16 +1,12 @@
-import base64
-import urllib
-from matplotlib.figure import Figure
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-import io
-import numpy as np
-import matplotlib.pyplot as plt
 import os
 import webbrowser
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .forms import SignUpForm, LoginForm, AttendanceReportForm, TeacherUpdateForm, StudentUpdateForm
+from .forms import AttendanceReportFormAdmin, AttendanceReportFormUser, SignUpForm, LoginForm, TeacherUpdateForm, StudentUpdateForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import User, Attendance
@@ -30,20 +26,6 @@ from website.detection import FaceRecognition
 faceRecognition = FaceRecognition()
 
 
-# def login_view(request):
-#     return render(request, 'login_view.html', {})
-
-
-# def Aboutus(request):
-#     return render(request, 'about.html', {})
-
-
-# def Contactus(request):
-#     return render(request, 'contact.html', {})
-
-# Multi user registration
-
-
 @login_required(login_url='login_view')
 def register(request):
     msg = None
@@ -58,7 +40,7 @@ def register(request):
                 user.is_superuser = False
                 user.save()
                 id = user.id
-                addFace(id)
+                addFace(id, request)
                 return redirect('adminpage')
 
             elif user_type == 'teacher':
@@ -68,7 +50,7 @@ def register(request):
                 user.is_superuser = False
                 user.save()
                 id = user.id
-                addFace(id)
+                addFace(id, request)
                 return redirect('adminpage')
 
             elif user_type == 'admin':
@@ -90,7 +72,6 @@ def register(request):
 #  Face Recognization
 
 
-@login_required(login_url='login_view')
 def addFace(id, request):
     user_id = id
     print("usersid", user_id)
@@ -268,17 +249,38 @@ def stu_record(request, pk):
 # # Delete Student Record
 
 
-@login_required(login_url='login_view')
+# @login_required(login_url='login_view')
+# def Delete_Stdrecord(request, pk):
+#     if request.user.userType == 'admin':
+#         delete_it = get_user_model().objects.get(id=pk)
+#         delete_it.delete()
+#         messages.warning(request, "Record Deleeted Successfully .....")
+#         return redirect('Stdata')
+#     else:
+#         messages.warning(
+#             request, "You must have to logged in to delete the records")
+#         return redirect('login_view')
+##################################
+
+
+
 def Delete_Stdrecord(request, pk):
     if request.user.userType == 'admin':
-        delete_it = get_user_model().objects.get(id=pk)
-        delete_it.delete()
-        messages.warning(request, "Record Deleeted Successfully .....")
+        # Get the user to be deleted
+        delete_user = get_user_model().objects.get (id=pk)
+
+        # Delete attendance records for the user
+        Attendance.objects.filter(username=delete_user).delete()
+
+        # Delete the user
+        delete_user.delete()
+
+        messages.warning(request, "Record Deleted Successfully.")
         return redirect('Stdata')
     else:
-        messages.warning(
-            request, "You must have to logged in to delete the records")
+        messages.warning(request, "You must be logged in to delete records.")
         return redirect('login_view')
+
 
 # # Update Student Record
 
@@ -434,31 +436,54 @@ def logout_user(request):
     messages.warning(request, "You have been Logged out..")
     return redirect('login_view')
 
+
 # # generate Attendence report
 
 
-class AttendanceReportView(FormView):
+class AttendanceReportView(LoginRequiredMixin, FormView):
+    template_name = 'Admin/report.html' or 'Student/attendance_report.html'
+    login_url = '/login_view/' 
 
-    template_name = 'Student/attendance_report.html'
-    form_class = AttendanceReportForm
+    def get_template_names(self):
+        if self.request.user.userType == 'admin':
+            return ['Admin/report.html']
+        elif self.request.user.userType == 'student':
+            return ['Student/attendance_report.html']
+        elif self.request.user.userType == 'teacher':
+            return ['Teacher/attendance_report.html']
+        # Add more conditions for other user types if needed
+        
+    def get_form_class(self):
+        if self.request.user.userType == 'admin':
+            return AttendanceReportFormAdmin
+        elif self.request.user.userType == 'student':
+            return AttendanceReportFormUser
+        elif self.request.user.userType == 'teacher':
+            return AttendanceReportFormUser
+        else:
+            # Default to a generic form class if user type is not recognized
+            return None
+        
 
     def form_valid(self, form):
+        user = form.cleaned_data['username']
         start_date = form.cleaned_data['start_date']
         end_date = form.cleaned_data['end_date']
         export_format = form.cleaned_data['format']
         num_days = (end_date - start_date).days
         # Generate report based on the selected format
         if export_format == 'csv':
-            return self.generate_csv_report(start_date, end_date)
+            return self.generate_csv_report(start_date, end_date, user)
         elif export_format == 'pdf':
-            return self.generate_pdf_report(start_date, end_date, num_days)
+            return self.generate_pdf_report(start_date, end_date, num_days, user)
         else:
             # Handle unsupported format gracefully
-            return self.render_to_response(self.get_context_data(form=form))
+            return super().form_valid(form)
 
-    def generate_csv_report(self, start_date, end_date):
+    def generate_csv_report(self, start_date, end_date, user):
+        print(user)
         # Generate CSV report logic using the specified date range
-        user = self.request.user
+
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="attendance_report.csv"'
         # Write CSV content to the response object
@@ -474,18 +499,19 @@ class AttendanceReportView(FormView):
         for stat in stattendances:
             writer.writerow([stat.username, stat.first_name, stat.faculty, stat.sem,
                             stat.date, stat.time, stat.roll_num, stat.ststus, stat.gender])
-
         return response
 
-    def generate_pdf_report(self, start_date, end_date, num_days):
-        user = self.request.user
+    def generate_pdf_report(self, start_date, end_date, num_days, user):
+        print(user)
 
         # Retrieve attendance records for the user within the specified date range
         attendances = Attendance.objects.filter(
             username=user, date__range=(start_date, end_date))
         presentdays = attendances.filter(ststus='Present').count()
         absentdays = num_days - presentdays
-
+        # Initialize f_name and l_name with None or some default values
+        f_name = None
+        l_name = None
         # Iterate through the stattendances and retrieve first_name and last_name
         for name in attendances:
             f_name = name.first_name
@@ -513,9 +539,9 @@ class AttendanceReportView(FormView):
         # Set the position of the PDF file to the beginning
         pdf_file.seek(0)
 
-        # Create the HTTP response with appropriate headers
+       # Create the HTTP response with appropriate headers
         response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="attendance_report.pdf"'
+        response['Content-Disposition'] = 'inline; filename="attendance_report.pdf"'
 
         # Write the PDF content to the response
         response.write(pdf_file.getvalue())

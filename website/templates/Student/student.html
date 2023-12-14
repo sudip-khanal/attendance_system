@@ -1,9 +1,6 @@
 {% extends "Student/stmain.html" %}
 
-
-
-
-{% block title %} Student Dashboard {% endblock %} 
+{% block title %} Student Profile {% endblock %} 
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -12,26 +9,12 @@
 
     <main>
         <div class="container-fluid px-4">
-            <h1 class="mt-4"> Student Dashboard</h1>
+            <h1 class="mt-4"> Student Profile</h1>
             <div class="row">
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <div class="card-body">My Profile</div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                           <a class="small text-white stretched-link" href="{% url 'stprofile' %}">View Details</a> 
-                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                        </div>
-                    </div>
-                </div>
-            
-               <a class="btn btn-secondary text-white  " href="{% url 'attendance_report' %}"> Attendence Reports</a> 
-                
-                        
-                    
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
-                        My Attendances 
+                         Attendances 
                     </div>
                     <div class="card-body">
                         <table id="datatablesSimple"  class="table table-hover">

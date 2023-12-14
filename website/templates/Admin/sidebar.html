@@ -7,21 +7,85 @@
 
             <div class="sb-sidenav-menu-heading"></div>
 
-            <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="{% url 'adminpage' %}">
+            {% comment %} <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="{% url 'adminpage' %}">
                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                 Dashboard  
                
-            </a>
-            
+            </a> {% endcomment %}
+            <div>
+                <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="{% url 'signup' %}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                    Add user
+                </a>
+            </div>
+            <div>
+                <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="{% url 'faceReconization' %}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-camera"></i></div>
+                    Take Attendance
+                </a>
+            </div>
+
+
+            <div>
+                <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="{% url 'attendence' %}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                    Student's Attendance
+                </a>
+            </div>
+
+            <div>
+                <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="{% url 'teacherattendence' %}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                    Teacher's Attendance
+                </a>
+            </div>
+            <div>
+                <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="{% url 'attendance_report' %}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-file"></i></div>
+                    Generate Report
+                </a>
+            </div>
+
+            <div>
+                <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="{% url 'AllAdtendance' %}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                    Attendance Details
+                </a>
+            </div>
+
+
+
+
+
+
+            <div>
+                <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="{% url 'Stdata' %}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                    Students
+                </a>
+            </div>
+            <div>
+                <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="{% url 'teacherdata' %}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                    Teachers
+                </a>
+            </div>
+            <div>
+                <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="{% url 'viewDataset' %}">
+                    <div class="sb-nav-link-icon"><i class="fa fa-image"></i></div>
+                    Dataset
+                </a>
+            </div>
+            <div>
+                <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="{% url 'adminData' %}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
+                    Admins
+                </a>
+            </div>
           
             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                    {% comment %} <a class="nav-link collapsed" href="{% url 'signup' %}" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                        Register
-                    </a>
-                    <a class="nav-link collapsed" href="{% url 'Stdata' %}" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                        Student Record
-                    </a> {% endcomment %}
+                
                     
                  
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -34,10 +98,7 @@
                 </nav>
             </div>
             <div>
-            {% comment %} <a class="nav-link {% if 'charts' in segment %} active {% endif %}" href="charts.html">
-                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                Charts
-            </a> {% endcomment %}
+           
         </div>
     </div>
   

@@ -1,93 +1,104 @@
-{% extends 'Admin/admain.html' %}
-{% block title %} Dashboard {% endblock %} 
+{% extends 'Admin/admain.html' %} {% block title %} Dashboard {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
 
-{% block content %}
+<main>
+  <br />
+  {% if messages %} {% for message in messages %}
+  <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  {% endfor %} {% endif %}
+  <br />
 
-
-<main> <br> 
-    {% if messages %}
-    {% for message in messages %}
-      <div class="alert alert-secondary alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  <div class="container-fluid px-4">
+    <div class="card mb-4">
+      <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        Teacher DataTable
       </div>
-    {% endfor %}
-    {% endif %}
-    <br>
+      <div class="card-body">
+        <table id="datatablesSimple" class="table table-hover">
+          <thead>
+            <tr>
+              <th>S.N</th>
+              <th>Id</th>
+              <th>Joined Date</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>User Name</th>
+              <th>Faculty</th>
+              <th>Semester</th>
+              <th>DOB</th>
+              <th>Gender</th>
+              <th>Phone No</th>
+              <th>Address</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>S.N</th>
+              <th>Id</th>
+              <th>Joined Date</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>User Name</th>
+              <th>Faculty</th>
+              <th>Semester</th>
+              <th>DOB</th>
+              <th>Gender</th>
+              <th>Phone No</th>
+              <th>Address</th>
+            </tr>
+          </tfoot>
 
-    <div class="container-fluid px-4">
-        <div class="card mb-4">
-            <div class="card-header">
-                <i class="fas fa-table me-1"></i>
-                Teacher DataTable 
-            </div>
-            <div class="card-body">
-                <table id="datatablesSimple"  class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Joined Date</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>User Name</th>
-                            <th>Faculty</th>
-                            <th>Semester</th>
-                            <th>DOB</th>
-                            <th>Gender</th>
-                            <th>Phone No</th>
-                            <th>Address</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                                <th>Id</th>
-                                <th>Joined Date</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>User Name</th>
-                                <th>Faculty</th>
-                                <th>Semester</th>
-                                <th>DOB</th>
-                                <th>Gender</th>
-                                <th>Phone No</th>
-                                <th>Address</th>
-                        </tr>
-                    </tfoot>
-
-                    <tbody>
-                        {% for Teacher in Teachers %}
-                        <tr>
-                            <td><a href= "{% url 'tearecord' Teacher.id %}"> {{ Teacher.id }} </a> </td>
-                            <td>{{ Teacher.date_joined}}  </td>
-                            <td>  {{ Teacher.first_name }} {{ Teacher.last_name }}</td>
-                            <td>{{ Teacher.email }}</td>
-                            <td>{{ Teacher.username}}  </td>
-                            <td>{{ Teacher.faculty}}  </td>
-                            <td>{{ Teacher.semester}}  </td>
-                            <td>{{ Teacher.dob}}  </td>
-                            <td>{{ Teacher.gender}}  </td>
-                            <td>{{ Teacher.phone}}  </td>
-                            <td>{{ Teacher.address}}  </td>
-                      </tr>
-                      {% endfor %} 
-                    </tbody>
-                </table>
-            </div>
-        </div>
+          <tbody>
+            {% for Teacher in Teachers %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td>
+                <a href="{% url 'tearecord' Teacher.id %}">
+                  {{ Teacher.id }}
+                </a>
+              </td>
+              <td>{{ Teacher.date_joined}}</td>
+              <td>{{ Teacher.first_name }} {{ Teacher.last_name }}</td>
+              <td>{{ Teacher.email }}</td>
+              <td>{{ Teacher.username}}</td>
+              <td>{{ Teacher.faculty}}</td>
+              <td>{{ Teacher.semester}}</td>
+              <td>{{ Teacher.dob}}</td>
+              <td>{{ Teacher.gender}}</td>
+              <td>{{ Teacher.phone}}</td>
+              <td>{{ Teacher.address}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </main>
 
+{% endblock content %} {% block javascripts %}
 
-{% endblock content %}
-{% block javascripts %}
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="/static/assets/demo/chart-area-demo.js"></script>
-    <script src="/static/assets/demo/chart-bar-demo.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-    <script src="/static/assets/js/datatables-simple-demo.js"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
+  crossorigin="anonymous"
+></script>
+<script src="/static/assets/demo/chart-area-demo.js"></script>
+<script src="/static/assets/demo/chart-bar-demo.js"></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"
+  crossorigin="anonymous"
+></script>
+<script src="/static/assets/js/datatables-simple-demo.js"></script>
 
 {% endblock javascripts %}
