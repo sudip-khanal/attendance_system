@@ -1,36 +1,36 @@
-##Smart Attendance System
+# Smart Attendance System
 
 The Smart Attendance System is a project designed to automate and streamline the process of tracking attendance for organizations, educational institutions, or any setting that requires attendance management.
 
-###Features:
+## Features:
 
-###User Management:
+### User Management:
 
-Create and manage user accounts with different roles and permissions (e.g., administrators, teachers, students).
-Attendance Tracking:
+### Create and manage user accounts with different roles and permissions (e.g., administrators, teachers, students).
+## Attendance Tracking:
 
-Record attendance for individuals or groups, marking them as present, absent, or tardy.
-Attendance Reports:
+### Record attendance for individuals or groups, marking them as present, absent, or tardy.
+## Attendance Reports:
 
-Generate detailed reports on attendance statistics, such as overall attendance percentage, individual attendance records, and trends over time.
-Integration: 
+### Generate detailed reports on attendance statistics, such as overall attendance percentage, individual attendance records, and trends over time.
+## Integration: 
 
-Seamlessly integrate with other systems or databases to import and export attendance data.
+### Seamlessly integrate with other systems or databases to import and export attendance data.
 User-Friendly Interface: Provide an intuitive and easy-to-use interface for administrators, teachers, and students to manage attendance efficiently.
 
 
-Installation
+## Installation
 Clone the repository:
 
 git clone https://github.com/sudip-khanal/attendance_system.git
 
-Install the required dependencies:
+## Install the required dependencies:
 
 cd attendance_system
 pip install -r requirements.txt
 Configure the project settings and database connection in the config.py file.
 
-Run the project:
+## Run the project:
 
 python manage.py runserver
 Access the Attendance System by opening the following URL in your web browser:
