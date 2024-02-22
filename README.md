@@ -1,10 +1,10 @@
-#Smart Attendance System
+##Smart Attendance System
 
 The Smart Attendance System is a project designed to automate and streamline the process of tracking attendance for organizations, educational institutions, or any setting that requires attendance management.
 
-Features:
+###Features:
 
-User Management:
+###User Management:
 
 Create and manage user accounts with different roles and permissions (e.g., administrators, teachers, students).
 Attendance Tracking:
